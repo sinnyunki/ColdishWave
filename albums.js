@@ -2,6 +2,13 @@
    DATA am2:멜랑콜리, am6:새벽공기, pm2:활기찬, pm5:노을, pm9:롹, pm11:네거티브,
 ================================================= */
 const albums = [ 
+    { artist: "D'Angelo and The Vanguard", 
+    title: "Black Messiah", 
+    genre: "am5",
+    year: 2014,
+    cover: "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/01/38/24/01382463-de8c-2a33-f8fe-fb3a008dfc87/886444977449.jpg/3000x3000bb.webp",
+    appleMusic: "https://music.apple.com/kr/album/black-messiah/950764300?l=en-GB" }, 
+      
   { artist: "Adrianne Lenker", 
     title: "Bright Future", 
     genre: "am6",
