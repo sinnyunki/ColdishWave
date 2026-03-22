@@ -140,7 +140,8 @@ const albums = [
     genre: "pm5",
     year: 2014,
     cover: "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/57/a0/bc/57a0bc0c-bc07-3849-0c8f-6a93048ddce0/8809390306240.jpg/3000x3000bb.webp",
-    appleMusic: "https://music.apple.com/kr/album/34-03/1553255147" },        
+    appleMusic: "https://music.apple.com/kr/album/34-03/1553255147" }, 
+    
   { artist: "Daft Punk", 
     title: "Random Access Memories", 
     genre: "pm2",
@@ -176,12 +177,12 @@ const albums = [
     cover: "https://is1-ssl.mzstatic.com/image/thumb/Music6/v4/0e/34/7d/0e347da0-63d8-bc69-ac29-8207d63fb950/5099951855451_1535x1535_300dpi.jpg/3000x3000bb.webp",
     appleMusic: "https://music.apple.com/kr/album/hercules-love-affair/693380063" },         
           
-  { artist: "Dodos", 
+  /*{ artist: "Dodos", 
     title: "Visiter", 
     genre: "pm2",
     year: 2008,
     cover: "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/da/cb/0b/dacb0be5-204b-3c3a-f246-2fb6f9de2bf2/644110051097.png/3000x3000bb.webp",
-    appleMusic: "https://music.apple.com/kr/album/visiter/1784593290" },         
+    appleMusic: "https://music.apple.com/kr/album/visiter/1784593290" },   */      
         
   { artist: "Handsome Furs", 
     title: "Plague Park", 
@@ -274,12 +275,12 @@ const albums = [
     cover: "https://is1-ssl.mzstatic.com/image/thumb/Music111/v4/32/7a/15/327a151d-c8d9-e74d-a038-4798b88895ed/657036103825.jpg/3000x3000bb.webp",
     appleMusic: "https://music.apple.com/kr/album/genghis-blues/215806958" },         
           
-  { artist: "Neutral Milk Hotel", 
+  /*{ artist: "Neutral Milk Hotel", 
     title: "In the Aeroplane Over the Sea", 
     genre: "pm5", 
     year: 1998,
     cover: "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/12/e3/5c/12e35c39-de5c-b501-3ef0-00f19fb3d513/56627.jpg/3000x3000bb.webp",
-    appleMusic: "https://music.apple.com/kr/album/in-the-aeroplane-over-the-sea/1839077554" },         
+    appleMusic: "https://music.apple.com/kr/album/in-the-aeroplane-over-the-sea/1839077554" },   */      
             
   { artist: "Pedro the Lion", 
     title: "It's Hard to Find a Friend", 
@@ -344,12 +345,12 @@ const albums = [
     cover: "https://is1-ssl.mzstatic.com/image/thumb/Video221/v4/1b/a1/a0/1ba1a0dd-53ee-5a57-f468-2ce7f103bb3b/Job24f08682-9b59-4324-aed1-7a9286067ab7-210859430-PreviewImage_Preview_Image_Intermediate_nonvideo_sdr_412568884_2456966929-Time1765263161655.png/3000x3000bf.webp",
     appleMusic: "https://music.apple.com/kr/album/floating-into-the-night/300947363" },         
              
-  { artist: "Cowboy Junkies", 
+ /* { artist: "Cowboy Junkies", 
     title: "The Trinity Session", 
     genre: "pm5", 
     year: 1988,
     cover: "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/52/01/98/520198ed-cb65-f8e5-40fb-8b564cc5280f/743211835626.jpg/3000x3000bb.webp",
-    appleMusic: "https://music.apple.com/kr/album/the-trinity-session/456804794" },         
+    appleMusic: "https://music.apple.com/kr/album/the-trinity-session/456804794" }, */        
                
   { artist: "Mercedes Sosa", 
     title: "Mercedes Sosa en Argentina", 
@@ -379,12 +380,12 @@ const albums = [
     cover: "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/b5/de/3a/b5de3acd-3008-fe1d-8f40-f4a497cfb16c/00602527965031.rgb.jpg/3000x3000bb.webp",
     appleMusic: "https://music.apple.com/kr/album/never-mind-the-bollocks-heres-the-sex-pistols/1440810369" },         
           
-  { artist: "New Trolls", 
+ /* { artist: "New Trolls", 
     title: "Concerto Grosso No. 1", 
     genre: "pm5", 
     year: 1976,
     cover: "https://is1-ssl.mzstatic.com/image/thumb/Music/ad/cd/09/mzi.nvtvjweb.jpg/3000x3000bb.webp",
-    appleMusic: "https://music.apple.com/kr/album/concerto-grosso-no-1/296216747" },         
+    appleMusic: "https://music.apple.com/kr/album/concerto-grosso-no-1/296216747" },   */      
              
   { artist: "한대수", 
     title: "Master Piece", 
@@ -414,12 +415,12 @@ const albums = [
     cover: "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/66/d5/9a/66d59a9f-c2d4-8da2-7053-ea2e97f0b7f7/21UMGIM38174.rgb.jpg/3000x3000bb.webp",
     appleMusic: "https://music.apple.com/kr/album/pink-moon/1567147188" },         
             
-  { artist: "Sandrose", 
+ /* { artist: "Sandrose", 
     title: "Same", 
     genre: "am2", 
     year: 1972,
     cover: "https://is1-ssl.mzstatic.com/image/thumb/Music/b7/cd/30/mzi.bxuswyye.jpg/3000x3000bb.webp",
-    appleMusic: "https://music.apple.com/kr/album/same/333568615" },         
+    appleMusic: "https://music.apple.com/kr/album/same/333568615" }, */        
         
   { artist: "T. Rex", 
     title: "Electric Warrior", 
@@ -428,12 +429,12 @@ const albums = [
     cover: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/92/3a/99/923a9920-2a86-e7e3-b177-949dd6c1d023/00602537055876.rgb.jpg/3000x3000bf.webp",
     appleMusic: "https://music.apple.com/kr/album/electric-warrior/1440804752" },         
     
-  { artist: "Hot Tuna", 
+  /*{ artist: "Hot Tuna", 
     title: "First Pull Up, Then Pull Down", 
     genre: "pm2", 
     year: 1971,
     cover: "https://is1-ssl.mzstatic.com/image/thumb/Features/9c/c5/a9/dj.mijmtvov.jpg/3000x3000bb.webp",
-    appleMusic: "https://music.apple.com/kr/album/first-pull-up-then-pull-down/298293946" },     
+    appleMusic: "https://music.apple.com/kr/album/first-pull-up-then-pull-down/298293946" },   */  
     
   { artist: "Pacific Gas & Electric", 
     title: "Are You Ready?", 
