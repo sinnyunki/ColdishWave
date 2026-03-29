@@ -674,42 +674,8 @@ body:not(.grid-view) #genreHUD {
 <!-- 🔽 VIEW TOGGLE BUTTON (PC 전용) -->
 <button id="viewToggle">GRID VIEW</button>
     
-    
-<script>
-/* =================================================
-   Apple Music 자동 앨범 로드 (FREE AUTO SYSTEM)
-================================================= */
-
-let albums = [];
-
-async function loadAlbums(){
-
-  try {
-
-    // 캐시 방지 (GitHub Pages 필수)
-    const res = await fetch(
-      "data/albums.json?v=" + Date.now()
-    );
-
-    const json = await res.json();
-
-    // playlists 여러개 → 하나로 합치기
-    albums = json.playlists.flatMap(p =>
-      p.albums.map(a => ({
-        ...a,
-        playlist: p.name
-      }))
-    );
-
-    initAlbums(); // 기존 시스템 실행
-
-  } catch(e){
-    console.error("albums.json load failed", e);
-  }
-}
-
-document.addEventListener("DOMContentLoaded", loadAlbums);
-</script>
+<!-- ✅ album JS 분리 : 스크립트 맨위 -->
+<script src="albums.js"></script>
     
 <script>
 /* =================================================
