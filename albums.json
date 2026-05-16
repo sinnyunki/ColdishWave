@@ -1,0 +1,60 @@
+{
+  "updatedAt": "2026-05-17T00:00:00.000Z",
+  "albums": [
+    {
+      "artist": "Adrianne Lenker",
+      "title": "Bright Future",
+      "genre": "am6",
+      "year": 2024,
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/db/d5/b5/dbd5b594-1e28-23e0-c4b2-26ddbe473dfb/191400064973.png/3000x3000bb.webp",
+      "appleMusic": "https://music.apple.com/kr/album/bright-future/1721534468",
+      "firstTrackId": "",
+      "firstTrackUrl": "",
+      "firstTrackName": ""
+    },
+    {
+      "artist": "Radiohead",
+      "title": "In Rainbows",
+      "genre": "pm11",
+      "year": 2007,
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/51/44/69/514469c8-13e5-0d6e-526f-9c41af788ea7/634904032463.png/3000x3000bb.webp",
+      "appleMusic": "https://music.apple.com/kr/album/in-rainbows/1440643153",
+      "firstTrackId": "",
+      "firstTrackUrl": "",
+      "firstTrackName": ""
+    },
+    {
+      "artist": "Nick Drake",
+      "title": "Pink Moon",
+      "genre": "am6",
+      "year": 1972,
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/66/d5/9a/66d59a9f-c2d4-8da2-7053-ea2e97f0b7f7/21UMGIM38174.rgb.jpg/3000x3000bb.webp",
+      "appleMusic": "https://music.apple.com/kr/album/pink-moon/1567147188",
+      "firstTrackId": "",
+      "firstTrackUrl": "",
+      "firstTrackName": ""
+    },
+    {
+      "artist": "My Bloody Valentine",
+      "title": "loveless",
+      "genre": "pm5",
+      "year": 1991,
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Video124/v4/19/e9/ca/19e9ca00-bdd6-0ee8-97d5-c8bf1003285b/Jobdd191d1d-1da1-4dba-b9ee-a7a8d1321819-110427108-PreviewImage_preview_image_nonvideo_sdr-Time1616701119751.png/1200x1200bb.webp",
+      "appleMusic": "https://music.apple.com/kr/album/loveless/1556921230",
+      "firstTrackId": "",
+      "firstTrackUrl": "",
+      "firstTrackName": ""
+    },
+    {
+      "artist": "Bill Evans Trio",
+      "title": "Waltz for Debby",
+      "genre": "am6",
+      "year": 1962,
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/3d/16/87/3d16876a-a3da-1a61-ec0d-672cab3756b0/10CMGIM00782.rgb.jpg/3000x3000bb.webp",
+      "appleMusic": "https://music.apple.com/kr/album/waltz-for-debby-remastered-live/1440747830",
+      "firstTrackId": "",
+      "firstTrackUrl": "",
+      "firstTrackName": ""
+    }
+  ]
+}

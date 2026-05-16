@@ -158,14 +158,14 @@ body.fullscreen-active{--cover-size:min(78vw,calc(100vh - 58px),960px);--cover-s
 <div class="adminPanel" id="adminPanel">
   <div class="adminDim" onclick="closeAdmin()"></div>
   <div class="adminBox">
-    <div class="adminHeader"><div><h2>관리자 모드</h2><p>소스코드를 수정하지 않고 Apple Music 앨범 링크를 추가/수정/삭제합니다. 저장은 현재 브라우저 localStorage에 보관됩니다.</p></div><button class="closeBtn" onclick="closeAdmin()">×</button></div>
+    <div class="adminHeader"><div><h2>관리자 모드</h2><p>등록 내용은 현재 브라우저에 저장되고, 온라인 퍼블리싱에는 albums.json 파일로 반영됩니다.</p></div><button class="closeBtn" onclick="closeAdmin()">×</button></div>
     <div class="formGrid">
       <div class="field"><label>Apple Music 앨범 링크</label><input id="inputLink" placeholder="https://music.apple.com/kr/album/.../1234567890"></div>
       <div class="row"><div class="field"><label>장르/무드 태그</label><input id="inputGenre" placeholder="예: am6, pm9, Rock, Jazz"></div><div class="field"><label>연도 직접 입력</label><input id="inputYear" placeholder="자동 조회 실패 시 입력"></div></div>
       <div class="row"><div class="field"><label>앨범명 직접 입력</label><input id="inputTitle" placeholder="선택 사항"></div><div class="field"><label>아티스트 직접 입력</label><input id="inputArtist" placeholder="선택 사항"></div></div>
       <div class="field"><label>커버 이미지 직접 입력</label><input id="inputCover" placeholder="자동 조회 실패 시 이미지 URL 입력"></div>
-      <div class="adminActions"><button class="smallBtn primary" onclick="saveFromAdmin()" id="saveBtn">앨범 추가</button><button class="smallBtn" onclick="clearForm()">입력 초기화</button><button class="smallBtn ok" onclick="exportData()">백업 내보내기</button><button class="smallBtn" onclick="importData()">백업 불러오기</button><button class="smallBtn danger" onclick="clearAll()">전체 삭제</button></div>
-      <div class="notice">앨범 링크만 넣으면 iTunes/Apple Music 공개 API로 커버, 앨범명, 아티스트, 장르, 연도를 자동 조회합니다. 기존처럼 직접 정리한 장르 태그를 쓰려면 장르/무드 태그에 am6, pm5 같은 값을 입력하세요.</div>
+      <div class="adminActions"><button class="smallBtn primary" onclick="saveFromAdmin()" id="saveBtn">앨범 추가</button><button class="smallBtn" onclick="clearForm()">입력 초기화</button><button class="smallBtn ok" onclick="exportPublishData()">퍼블리싱 파일</button><button class="smallBtn ok" onclick="exportData()">백업 내보내기</button><button class="smallBtn" onclick="importData()">백업 불러오기</button><button class="smallBtn danger" onclick="clearAll()">전체 삭제</button></div>
+      <div class="notice">앨범 링크만 넣으면 iTunes/Apple Music 공개 API로 정보를 자동 조회합니다. 온라인에 반영하려면 퍼블리싱 파일을 눌러 내려받은 albums.json을 index.html과 같은 위치에 업로드하세요.</div>
     </div>
     <div class="adminList"><h3>등록된 앨범</h3><div id="adminList"></div></div>
   </div>
@@ -174,6 +174,8 @@ body.fullscreen-active{--cover-size:min(78vw,calc(100vh - 58px),960px);--cover-s
 
 <script>
 const STORAGE_KEY='APPLE_MUSIC_COVERFLOW_ADMIN_V1';
+const PUBLISHED_HASH_KEY='APPLE_MUSIC_COVERFLOW_PUBLISHED_HASH_V1';
+const PUBLISHED_DATA_URL='albums.json';
 const FAVORITE_KEY='APPLE_MUSIC_COVERFLOW_FAVORITES_V1';
 const PLAYBACK_MODE_KEY='APPLE_MUSIC_COVERFLOW_PLAYBACK_MODE_V1';
 const SHORTCUT_NAME='Play Apple Music URL';
@@ -192,7 +194,11 @@ const sampleAlbums=[
 {artist:'My Bloody Valentine',title:'loveless',genre:'pm5',year:1991,cover:'https://is1-ssl.mzstatic.com/image/thumb/Video124/v4/19/e9/ca/19e9ca00-bdd6-0ee8-97d5-c8bf1003285b/Jobdd191d1d-1da1-4dba-b9ee-a7a8d1321819-110427108-PreviewImage_preview_image_nonvideo_sdr-Time1616701119751.png/1200x1200bb.webp',appleMusic:'https://music.apple.com/kr/album/loveless/1556921230'},
 {artist:'Bill Evans Trio',title:'Waltz for Debby',genre:'am6',year:1962,cover:'https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/3d/16/87/3d16876a-a3da-1a61-ec0d-672cab3756b0/10CMGIM00782.rgb.jpg/3000x3000bb.webp',appleMusic:'https://music.apple.com/kr/album/waltz-for-debby-remastered-live/1440747830'}
 ];
-function load(){try{library=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null')||sampleAlbums;save();}catch(e){library=sampleAlbums;save();}}
+function normalizeAlbum(a){return{artist:a.artist||'',title:a.title||'',genre:a.genre||'',year:a.year||'',cover:hiRes(a.cover||a.artwork||''),appleMusic:a.appleMusic||a.link||'',firstTrackId:a.firstTrackId||'',firstTrackUrl:a.firstTrackUrl||'',firstTrackName:a.firstTrackName||''};}
+function normalizeAlbums(data){const list=Array.isArray(data)?data:data?.albums;return Array.isArray(list)?list.map(normalizeAlbum).filter(a=>a.title||a.artist||a.cover||a.appleMusic):[];}
+function dataSignature(data){const s=JSON.stringify(data);let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return `${data.length}:${s.length}:${h>>>0}`;}
+async function fetchPublishedAlbums(){if(location.protocol==='file:')return null;try{const res=await fetch(`${PUBLISHED_DATA_URL}?v=${Date.now()}`,{cache:'no-store'});if(!res.ok)return null;const data=await res.json();const albums=normalizeAlbums(data);return albums.length?albums:null;}catch(e){return null;}}
+async function load(){let local=null;try{local=normalizeAlbums(JSON.parse(localStorage.getItem(STORAGE_KEY)||'null'));}catch(e){}const published=await fetchPublishedAlbums();if(published){const sig=dataSignature(published),oldSig=localStorage.getItem(PUBLISHED_HASH_KEY);if(!local?.length||(oldSig&&oldSig!==sig)){library=published;localStorage.setItem(PUBLISHED_HASH_KEY,sig);save();return;}if(!oldSig)localStorage.setItem(PUBLISHED_HASH_KEY,sig);}library=local?.length?local:sampleAlbums.map(normalizeAlbum);save();}
 function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(library));}
 function saveFav(){localStorage.setItem(FAVORITE_KEY,JSON.stringify(favorites));}
 function uid(a){return `${a.artist||''}__${a.title||''}__${a.appleMusic||''}`;}
@@ -252,8 +258,10 @@ function editItem(i){const a=library[i];editingIndex=i;$('inputLink').value=a.ap
 function deleteItem(i){if(!confirm('이 앨범을 삭제할까요?'))return;library.splice(i,1);save();buildGenres();applyFilters();toast('삭제되었습니다.');}
 function moveItem(i,d){const j=i+d;if(j<0||j>=library.length)return;[library[i],library[j]]=[library[j],library[i]];save();applyFilters();}
 function clearAll(){if(!confirm('등록된 모든 앨범을 삭제할까요?'))return;library=[];save();buildGenres();applyFilters();toast('전체 삭제되었습니다.');}
-function exportData(){const blob=new Blob([JSON.stringify(library,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='apple-music-coverflow-backup.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);toast('백업 파일을 저장했습니다.');}
-function importData(){const input=document.createElement('input');input.type='file';input.accept='application/json,.js';input.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{let txt=String(r.result);let data;if(txt.includes('const albums')){txt=txt.replace(/^[\s\S]*?const\s+albums\s*=\s*/,'').replace(/;\s*[\s\S]*$/,'');data=Function('return '+txt)();}else data=JSON.parse(txt);if(!Array.isArray(data))throw new Error('invalid');library=data.map(a=>({artist:a.artist||'',title:a.title||'',genre:a.genre||'',year:a.year||'',cover:hiRes(a.cover||a.artwork||''),appleMusic:a.appleMusic||a.link||'',firstTrackId:a.firstTrackId||'',firstTrackUrl:a.firstTrackUrl||'',firstTrackName:a.firstTrackName||''}));save();buildGenres();index=0;applyFilters();toast('백업을 불러왔습니다.');}catch(err){toast('파일을 읽지 못했습니다. JSON 백업 또는 albums.js 형식을 확인하세요.');}};r.readAsText(f);};input.click();}
+function downloadJson(data,name){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);}
+function exportData(){downloadJson(library.map(normalizeAlbum),'apple-music-coverflow-backup.json');toast('백업 파일을 저장했습니다.');}
+function exportPublishData(){const data={updatedAt:new Date().toISOString(),albums:library.map(normalizeAlbum)};downloadJson(data,'albums.json');toast('albums.json을 저장했습니다. 이 파일을 함께 업로드하세요.');}
+function importData(){const input=document.createElement('input');input.type='file';input.accept='application/json,.js';input.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{let txt=String(r.result);let data;if(txt.includes('const albums')){txt=txt.replace(/^[\s\S]*?const\s+albums\s*=\s*/,'').replace(/;\s*[\s\S]*$/,'');data=Function('return '+txt)();}else data=JSON.parse(txt);const albums=normalizeAlbums(data);if(!albums.length)throw new Error('invalid');library=albums;save();buildGenres();index=0;applyFilters();toast('백업을 불러왔습니다.');}catch(err){toast('파일을 읽지 못했습니다. JSON 백업 또는 albums.js 형식을 확인하세요.');}};r.readAsText(f);};input.click();}
 function toggleFullscreen(){const el=document.documentElement;if(!document.fullscreenElement){(el.requestFullscreen||el.webkitRequestFullscreen||el.msRequestFullscreen)?.call(el);}else{(document.exitFullscreen||document.webkitExitFullscreen||document.msExitFullscreen)?.call(document);}}
 function onFullscreenChange(){const on=!!(document.fullscreenElement||document.webkitFullscreenElement||document.msFullscreenElement);document.body.classList.toggle('fullscreen-active',on);$('fullscreenBtn').textContent=on?'전체화면 해제':'전체화면';setTimeout(render,100);}document.addEventListener('fullscreenchange',onFullscreenChange);document.addEventListener('webkitfullscreenchange',onFullscreenChange);
 function toggleControls(){toggleMenu();}
@@ -270,7 +278,8 @@ coverflow.addEventListener('pointermove',e=>{if(!dragging)return;lastX=e.clientX
 coverflow.addEventListener('pointerup',e=>{if(!dragging)return;const diffX=lastX-startX,diffY=lastY-startY,moved=Math.hypot(diffX,diffY);dragging=false;if(Math.abs(diffX)>45&&Math.abs(diffX)>Math.abs(diffY)){suppressCardClick=true;diffX<0?nextAlbum():prevAlbum();setTimeout(()=>{suppressCardClick=false;},350);}else if(tapCardIndex!==null&&moved<14){e.preventDefault();suppressCardClick=true;openAlbumAt(tapCardIndex);setTimeout(()=>{suppressCardClick=false;},500);}tapCardIndex=null;});
 coverflow.addEventListener('pointercancel',()=>{dragging=false;suppressCardClick=false;tapCardIndex=null;});
 window.addEventListener('resize',()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(schedulePositionCards);});
-load();buildGenres();applyFilters();
+async function init(){await load();buildGenres();applyFilters();}
+init();
 </script>
 </body>
 </html>
