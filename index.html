@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#000000" />
-<title>Apple Music Cover Flow Admin</title>
+<title>CodishWave</title>
 <style>
 :root{
   --bg:#050505;
@@ -67,8 +67,8 @@ body.controls-open .searchbar,.topbar:hover + .searchbar,.searchbar:focus-within
 .mainBtn:hover{transform:translateY(-2px);background:rgba(255,255,255,.14)}
 .mainBtn.primary:hover{background:#ff4059}
 .counter,.genreHud{position:fixed;bottom:22px;z-index:24;min-height:38px;max-width:calc(50vw - 36px);display:inline-flex;align-items:center;padding:0 15px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(0,0,0,.38);color:rgba(255,255,255,.86);box-shadow:0 14px 38px rgba(0,0,0,.30);backdrop-filter:blur(16px);pointer-events:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.counter{left:22px;font-size:14px;font-weight:950;letter-spacing:.04em}
-.genreHud{right:22px;font-size:14px;font-weight:900}
+.counter{right:22px;font-size:14px;font-weight:950;letter-spacing:.04em}
+.genreHud{left:22px;font-size:14px;font-weight:900}
 
 .adminPanel{position:fixed;inset:0;z-index:100;display:none}.adminPanel.show{display:block}
 .adminDim{position:absolute;inset:0;background:rgba(0,0,0,.70);backdrop-filter:blur(9px)}
@@ -80,7 +80,7 @@ body.controls-open .searchbar,.topbar:hover + .searchbar,.searchbar:focus-within
 
 body.fullscreen-active{--cover-size:min(78vw,calc(100vh - 58px),960px);--cover-size:min(78vw,calc(100dvh - 58px),960px)}body.fullscreen-active .topbar{padding-top:12px}body.fullscreen-active .brand p{display:none}body.fullscreen-active .searchbar{top:68px}body.fullscreen-active .infoDock{bottom:14px;padding:14px 18px}body.fullscreen-active .stage{padding-top:0}
 
-@media (max-width:900px){:root{--cover-size:min(84vw,calc(100vh - 86px),620px);--cover-size:min(84vw,calc(100dvh - 86px),620px)}html,body{overflow:auto}.topbar{position:relative;padding:16px 10px 0}.searchbar{position:relative;top:auto;left:auto;transform:none;width:calc(100% - 20px);margin:12px auto 0;grid-template-columns:1fr;opacity:1;pointer-events:auto}.stage{position:relative;height:100vh;height:100dvh;padding-top:0}.albumCard{border-radius:20px}.infoDock{position:relative;left:auto;bottom:auto;transform:none;width:calc(100% - 20px);margin:0 auto 24px;grid-template-columns:1fr}.dockActions{justify-content:flex-start}.navBtn{width:48px;height:48px}.navBtn.left{left:10px}.navBtn.right{right:10px}.counter,.genreHud{left:50%;right:auto;max-width:calc(100% - 32px);transform:translateX(-50%)}.counter{top:calc(14px + env(safe-area-inset-top));bottom:auto}.genreHud{bottom:calc(18px + env(safe-area-inset-bottom))}}
+@media (max-width:900px){:root{--cover-size:min(84vw,calc(100vh - 86px),620px);--cover-size:min(84vw,calc(100dvh - 86px),620px)}html,body{overflow:auto}.topbar{position:relative;padding:16px 10px 0}.searchbar{position:relative;top:auto;left:auto;transform:none;width:calc(100% - 20px);margin:12px auto 0;grid-template-columns:1fr;opacity:1;pointer-events:auto}.stage{position:relative;height:100vh;height:100dvh;padding-top:0}.albumCard{border-radius:20px}.infoDock{position:relative;left:auto;bottom:auto;transform:none;width:calc(100% - 20px);margin:0 auto 24px;grid-template-columns:1fr}.dockActions{justify-content:flex-start}.navBtn{width:48px;height:48px}.navBtn.left{left:10px}.navBtn.right{right:10px}.counter,.genreHud{left:50%;right:auto;max-width:calc(100% - 32px);transform:translateX(-50%)}.counter{bottom:calc(18px + env(safe-area-inset-bottom))}.genreHud{top:calc(14px + env(safe-area-inset-top));bottom:auto}}
 @media (max-width:900px){.stage{perspective:none}.coverflow,.albumCard{transform-style:flat}.albumCard{transition:transform .46s var(--flow-ease),opacity .32s ease}}
 @media (max-width:560px){:root{--cover-size:min(90vw,calc(100vh - 92px),460px);--cover-size:min(90vw,calc(100dvh - 92px),460px)}.brand h1{font-size:32px}.topActions{gap:6px}.pill{height:38px;padding:0 12px;font-size:13px}.stage{height:100vh;height:100dvh}.albumCard{border-radius:18px}.albumTitle{font-size:clamp(30px,9vw,44px)}.mainBtn{height:44px;padding:0 14px}.row{grid-template-columns:1fr}.adminBox{border-radius:20px;padding:16px}.listItem{grid-template-columns:50px 1fr}.listItem img{width:50px;height:50px}.listControls{grid-column:1/-1;justify-content:flex-start}.navBtn{width:42px;height:42px;font-size:22px}}
 
@@ -132,7 +132,7 @@ body.fullscreen-active{--cover-size:min(78vw,calc(100vh - 58px),960px);--cover-s
       <div class="menuHeader">
         <div>
           <div class="menuKicker">LOCAL APPLE MUSIC</div>
-          <h2>Cover Flow</h2>
+          <h2>CodishWave</h2>
         </div>
         <button class="menuClose" onclick="closeMenu()" aria-label="메뉴 닫기">×</button>
       </div>
