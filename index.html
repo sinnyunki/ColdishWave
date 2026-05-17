@@ -93,7 +93,7 @@ body.fullscreen-active{--cover-size:min(78vw,calc(100vh - 58px),960px);--cover-s
 .menuPanel{position:fixed;inset:0;z-index:90;display:none;pointer-events:none}.menuPanel.show{display:block;pointer-events:auto}.menuDim{position:absolute;inset:0;background:rgba(0,0,0,.40);backdrop-filter:blur(4px)}
 .menuBox{position:absolute;top:14px;right:14px;width:min(430px,calc(100% - 28px));max-height:calc(100vh - 28px);overflow:auto;border:1px solid rgba(255,255,255,.14);border-radius:28px;background:linear-gradient(180deg,rgba(20,20,20,.94),rgba(10,10,10,.92));box-shadow:0 34px 110px rgba(0,0,0,.72);backdrop-filter:blur(24px);padding:20px;animation:menuIn .22s ease both}
 @keyframes menuIn{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
-.menuHeader{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:18px}.menuKicker{font-size:11px;color:var(--muted);font-weight:900;letter-spacing:.08em}.menuHeader h2{font-size:30px;letter-spacing:-.06em;line-height:.96}.menuClose{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;font-size:24px;line-height:1}
+.menuSearchGroup{margin-bottom:18px}.menuHeader{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:18px}.menuKicker{font-size:11px;color:var(--muted);font-weight:900;letter-spacing:.08em}.menuHeader h2{font-size:30px;letter-spacing:-.06em;line-height:.96}.menuClose{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;font-size:24px;line-height:1}
 .menuCurrent{display:grid;grid-template-columns:minmax(92px,auto) 1fr;gap:12px;align-items:start;padding:14px;border:1px solid rgba(255,255,255,.10);border-radius:20px;background:rgba(255,255,255,.055);margin-bottom:14px}.currentIndex{font-size:30px;line-height:1;font-weight:950;letter-spacing:-.04em;color:rgba(255,255,255,.42);white-space:nowrap}
 .menuCurrent .albumTitle{font-size:24px;line-height:1;letter-spacing:-.055em}.menuCurrent .albumArtist{font-size:14px;margin-top:8px}.menuCurrent .albumMeta{font-size:12px;margin-top:8px;min-height:auto}
 .menuActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}.menuActions .mainBtn{width:100%;height:44px;padding:0 12px;font-size:13px}.menuActions .primary{grid-column:1/-1}.menuSectionTitle{font-size:12px;color:var(--muted);font-weight:900;margin:4px 0 8px;letter-spacing:.02em}
@@ -118,6 +118,15 @@ body.fullscreen-active{--cover-size:min(78vw,calc(100vh - 58px),960px);--cover-s
   <aside class="menuPanel" id="menuPanel" aria-hidden="true">
     <div class="menuDim" onclick="closeMenu()"></div>
     <div class="menuBox">
+      <div class="menuSearchGroup">
+        <div class="menuSectionTitle">검색 / 정렬</div>
+        <div class="searchbar menuSearchbar">
+          <input id="searchInput" type="search" placeholder="앨범 / 아티스트 검색" oninput="setSearch(this.value)">
+          <select id="genreSelect" onchange="setGenre(this.value)"><option value="All">All Genres</option><option value="Favorites">Favorites</option></select>
+          <select onchange="setSort(this.value)"><option value="custom">등록 순서</option><option value="artist">아티스트 이름순</option><option value="year-desc">최신 연도순</option><option value="year">오래된 연도순</option><option value="title">앨범 제목순</option><option value="random">랜덤</option></select>
+        </div>
+      </div>
+
       <div class="menuHeader">
         <div>
           <div class="menuKicker">LOCAL APPLE MUSIC</div>
@@ -136,20 +145,10 @@ body.fullscreen-active{--cover-size:min(78vw,calc(100vh - 58px),960px);--cover-s
       </div>
 
       <div class="menuActions">
-        <button class="mainBtn" onclick="prevAlbum()">‹ 이전 앨범</button>
-        <button class="mainBtn" onclick="nextAlbum()">다음 앨범 ›</button>
         <button class="mainBtn" onclick="toggleFavoriteCurrent()" id="favoriteBtn">☆ Favorite</button>
         <button class="mainBtn" id="fullscreenBtn" onclick="toggleFullscreen()">전체화면</button>
         <button class="mainBtn" onclick="openAdmin(); closeMenu();">관리자 모드</button>
         <button class="mainBtn" id="playbackModeBtn" onclick="togglePlaybackMode()">재생 방식: 직접</button>
-        <a class="mainBtn primary" id="appleLink" href="music://music.apple.com/kr" onclick="event.preventDefault(); openCurrent();">Apple Music 앱 열기</a>
-      </div>
-
-      <div class="menuSectionTitle">검색 / 정렬</div>
-      <div class="searchbar menuSearchbar">
-        <input id="searchInput" type="search" placeholder="앨범 / 아티스트 검색" oninput="setSearch(this.value)">
-        <select id="genreSelect" onchange="setGenre(this.value)"><option value="All">All Genres</option><option value="Favorites">Favorites</option></select>
-        <select onchange="setSort(this.value)"><option value="custom">등록 순서</option><option value="artist">아티스트 이름순</option><option value="year-desc">최신 연도순</option><option value="year">오래된 연도순</option><option value="title">앨범 제목순</option><option value="random">랜덤</option></select>
       </div>
 
       <p class="menuHint">화면에서는 커버플로우만 보이도록 모든 기능 버튼을 이 메뉴 안으로 모았습니다. 스크롤, 드래그, 방향키로 넘기고 커버를 클릭하면 Apple Music 앱이 열립니다.</p>
@@ -259,8 +258,9 @@ function schedulePositionCards(){if(positionFrame)return;positionFrame=requestAn
 function positionCards(){if(!filtered.length)return;syncVisibleCards();const g=gap();coverflow.querySelectorAll('.albumCard').forEach(card=>{const i=Number(card.dataset.index),st=transformFor(i,g);updateCardMeta(card,filtered[i],i);card.classList.toggle('active',i===index);card.classList.toggle('hidden',Math.abs(signedDistance(i))>VISIBLE_RADIUS);card.style.transform=st.t;card.style.opacity=st.o;card.style.zIndex=st.z;card.style.setProperty('--shade',st.s);card.style.pointerEvents=st.p;});setInfo(filtered[index]);preloadNearbyCovers();}
 function preloadNearbyCovers(){clearTimeout(preloadTimer);preloadTimer=setTimeout(()=>{visibleIndexes(index,2).forEach(i=>{const a=filtered[i];const img=new Image();img.decoding='async';img.src=displayCover(a?.cover);hydrateFirstTrack(a);});},80);}
 function updatePlaybackModeButton(){playbackModeBtn.textContent=playbackMode==='shortcut'?'재생 방식: 단축어':'재생 방식: 직접';}
-function setInfo(a){updatePlaybackModeButton();if(!a){albumTitle.textContent='앨범을 추가하세요';albumArtist.textContent='관리자 모드에서 Apple Music 앨범 링크를 입력하면 됩니다.';albumMeta.textContent='앨범 커버 클릭 시 Apple Music 앱으로 바로 이동합니다.';appleLink.href=playbackMode==='shortcut'?shortcutRunUrl('https://music.apple.com/kr'):appleAppUrl('https://music.apple.com/kr');ambientImage.style.backgroundImage='';lastAmbientCover='';counter.textContent='00 / 00';genreHud.textContent='장르 미지정';menuCounter.textContent='00 / 00';favoriteBtn.textContent='☆ Favorite';return;}albumTitle.textContent=a.title||'';albumArtist.textContent=a.artist||'';const genre=albumGenreText(a);albumMeta.textContent=[a.year,genre,albumPositionText()].filter(Boolean).join(' • ');appleLink.href=playbackTargetUrl(playbackUrl(a));const bg=ambientCover(a.cover);if(bg!==lastAmbientCover){ambientImage.style.backgroundImage=bg?`url("${bg}")`:'';lastAmbientCover=bg;}const n=albumNumberText();counter.textContent=n;genreHud.textContent=genre;menuCounter.textContent=n;favoriteBtn.textContent=favorites.includes(uid(a))?'★ Favorited':'☆ Favorite';}
-function openAlbumAt(i,direct=false){const a=filtered[i];if(!a)return;openAppleMusic(playbackUrl(a),direct);if(!a.firstTrackId)hydrateFirstTrack(a).then(item=>{if(item?.firstTrackId)appleLink.href=playbackTargetUrl(playbackUrl(item));});}
+function updateAppleLinkHref(url){if(appleLink)appleLink.href=url;}
+function setInfo(a){updatePlaybackModeButton();if(!a){albumTitle.textContent='앨범을 추가하세요';albumArtist.textContent='관리자 모드에서 Apple Music 앨범 링크를 입력하면 됩니다.';albumMeta.textContent='앨범 커버 클릭 시 Apple Music 앱으로 바로 이동합니다.';updateAppleLinkHref(playbackMode==='shortcut'?shortcutRunUrl('https://music.apple.com/kr'):appleAppUrl('https://music.apple.com/kr'));ambientImage.style.backgroundImage='';lastAmbientCover='';counter.textContent='00 / 00';genreHud.textContent='장르 미지정';menuCounter.textContent='00 / 00';favoriteBtn.textContent='☆ Favorite';return;}albumTitle.textContent=a.title||'';albumArtist.textContent=a.artist||'';const genre=albumGenreText(a);albumMeta.textContent=[a.year,genre,albumPositionText()].filter(Boolean).join(' • ');updateAppleLinkHref(playbackTargetUrl(playbackUrl(a)));const bg=ambientCover(a.cover);if(bg!==lastAmbientCover){ambientImage.style.backgroundImage=bg?`url("${bg}")`:'';lastAmbientCover=bg;}const n=albumNumberText();counter.textContent=n;genreHud.textContent=genre;menuCounter.textContent=n;favoriteBtn.textContent=favorites.includes(uid(a))?'★ Favorited':'☆ Favorite';}
+function openAlbumAt(i,direct=false){const a=filtered[i];if(!a)return;openAppleMusic(playbackUrl(a),direct);if(!a.firstTrackId)hydrateFirstTrack(a).then(item=>{if(item?.firstTrackId)updateAppleLinkHref(playbackTargetUrl(playbackUrl(item)));});}
 function onAlbumClick(i){if(suppressCardClick){suppressCardClick=false;return;}openAlbumAt(i,true);}
 function openCurrent(){openAlbumAt(index);}
 function setAlbumIndex(i){if(!filtered.length)return;index=(i+filtered.length)%filtered.length;schedulePositionCards();}
