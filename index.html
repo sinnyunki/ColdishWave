@@ -142,6 +142,8 @@ body.list-mode .counter,body.list-mode .genreHud{display:none}
 .albumListTitle{height:17px;margin-top:8px;font-size:14px;line-height:17px;font-weight:850;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .albumListArtist{margin-top:4px;color:var(--sub);font-size:13px;line-height:1.18;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .albumListMeta{margin-top:4px;color:var(--muted);font-size:11px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.listActionPanel{position:fixed;inset:0;z-index:115;display:none;pointer-events:none}.listActionPanel.show{display:block;pointer-events:auto}.listActionDim{position:absolute;inset:0;background:rgba(0,0,0,.48);backdrop-filter:blur(6px)}.listActionSheet{position:absolute;left:50%;bottom:calc(14px + var(--safe-bottom));transform:translateX(-50%);width:min(390px,calc(100% - 24px - var(--safe-left) - var(--safe-right)));border:1px solid rgba(255,255,255,.16);border-radius:22px;background:linear-gradient(180deg,rgba(28,28,28,.97),rgba(12,12,12,.96));box-shadow:0 28px 90px rgba(0,0,0,.62);padding:14px;animation:sheetIn .18s ease both}.listActionMeta{display:grid;grid-template-columns:58px 1fr;gap:11px;align-items:center;margin-bottom:12px;padding:4px}.listActionMeta img{width:58px;height:58px;border-radius:9px;object-fit:cover;background:#222}.listActionTitle{display:block;font-size:15px;line-height:1.25;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.listActionArtist{display:block;margin-top:5px;color:var(--sub);font-size:13px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.listActionButtons{display:grid;gap:8px}.listActionButtons button{height:46px;border:1px solid rgba(255,255,255,.13);border-radius:14px;background:rgba(255,255,255,.08);color:#fff;font-size:15px;font-weight:900}.listActionButtons button.danger{color:#ffb5b5;background:rgba(255,90,90,.13);border-color:rgba(255,90,90,.35)}
+@keyframes sheetIn{from{opacity:0;transform:translateX(-50%) translateY(10px) scale(.98)}to{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}}
 @media (max-width:900px){body.list-mode .stage{position:absolute;inset:0;height:100vh;height:100dvh;padding:calc(56px + var(--safe-top)) 0 0}.albumListGrid{grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:24px 14px;padding-bottom:calc(42px + var(--safe-bottom))}.albumListTitle{height:16px;font-size:13px;line-height:16px}.albumListArtist{font-size:12px}.albumListMeta{font-size:10px}}
 @media (max-width:560px){body.list-mode .stage{padding-top:calc(54px + var(--safe-top))}.albumListGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 12px;padding-left:calc(10px + var(--safe-left));padding-right:calc(10px + var(--safe-right))}.albumListCover{border-radius:5px}}
 
@@ -223,6 +225,23 @@ body.list-mode .counter,body.list-mode .genreHud{display:none}
   </div>
 </div>
 <div class="toast" id="toast"></div>
+<div class="listActionPanel" id="listActionPanel" aria-hidden="true">
+  <div class="listActionDim" onclick="closeListActions()"></div>
+  <div class="listActionSheet" role="dialog" aria-modal="true" aria-label="앨범 작업">
+    <div class="listActionMeta">
+      <img id="listActionCover" alt="">
+      <div>
+        <strong class="listActionTitle" id="listActionTitle">앨범</strong>
+        <span class="listActionArtist" id="listActionArtist">아티스트</span>
+      </div>
+    </div>
+    <div class="listActionButtons">
+      <button onclick="editListActionAlbum()">앨범 정보 수정</button>
+      <button class="danger" onclick="deleteListActionAlbum()">앨범 삭제</button>
+      <button onclick="closeListActions()">닫기</button>
+    </div>
+  </div>
+</div>
 
 <script>
 const STORAGE_KEY='APPLE_MUSIC_COVERFLOW_ADMIN_V1';
@@ -244,7 +263,7 @@ const SWIPE_STEP=92;
 const MAX_BURST_STEPS=7;
 const VISIBLE_RADIUS=4;
 const RETURN_DELAY=10000;
-let library=[];let filtered=[];let index=0;let searchQuery='';let genreFilter='All';let sortMode='random';let editingIndex=null;let dragging=false;let startX=0;let startY=0;let lastX=0;let lastY=0;let startTime=0;let tapCardIndex=null;let suppressCardClick=false;let navLocked=false;let queuedDirection=0;let wheelDelta=0;let wheelResetTimer=null;let resizeFrame=null;let positionFrame=null;let mobileScrollFrame=null;let returnTimer=null;let returnAnchorId='';let autoReturning=false;let lastAmbientCover='';let preloadTimer=null;
+let library=[];let filtered=[];let index=0;let searchQuery='';let genreFilter='All';let sortMode='random';let editingIndex=null;let dragging=false;let startX=0;let startY=0;let lastX=0;let lastY=0;let startTime=0;let tapCardIndex=null;let suppressCardClick=false;let navLocked=false;let queuedDirection=0;let wheelDelta=0;let wheelResetTimer=null;let resizeFrame=null;let positionFrame=null;let mobileScrollFrame=null;let returnTimer=null;let returnAnchorId='';let autoReturning=false;let lastAmbientCover='';let preloadTimer=null;let listActionFilteredIndex=null;let listLongPressTimer=null;let listLongPressStarted=false;let listLongPressPoint=null;
 const $=id=>document.getElementById(id);
 const coverflow=$('coverflow'),adminPanel=$('adminPanel'),adminList=$('adminList'),ambientImage=$('ambientImage');
 const albumTitle=$('albumTitle'),albumArtist=$('albumArtist'),albumMeta=$('albumMeta'),appleLink=$('appleLink'),counter=$('counter'),genreHud=$('genreHud'),menuCounter=$('menuCounter'),favoriteBtn=$('favoriteBtn'),playbackModeBtn=$('playbackModeBtn');
@@ -323,7 +342,7 @@ function rememberReturnAlbum(i=index){if(filtered[i]){returnAnchorId=uid(filtere
 function ensureReturnAnchor(){if(currentReturnIndex()<0)rememberReturnAlbum(index);}
 function scheduleReturnToAnchor(){clearReturnTimer();if(autoReturning)return;const target=currentReturnIndex();if(target<0||target===index)return;returnTimer=setTimeout(()=>{const i=currentReturnIndex();if(i<0||i===index)return;autoReturning=true;setAlbumIndex(i,{skipReturn:true,behavior:'smooth'});setTimeout(()=>{autoReturning=false;},800);},RETURN_DELAY);}
 function createCard(a,i){const mobile=isMobileView(),card=document.createElement(mobile?'a':'button');card.addEventListener('pointerdown',()=>rememberReturnAlbum(Number(card.dataset.index)),{passive:true});if(mobile){card.href=mobileAppleMusicHref(a);card.addEventListener('click',e=>{e.preventDefault();const idx=Number(card.dataset.index);rememberReturnAlbum(idx);openAlbumAt(idx,true);});}else{card.type='button';card.addEventListener('click',()=>onAlbumClick(Number(card.dataset.index)));}card.className='albumCard';card.dataset.index=String(i);const img=new Image();img.src=displayCover(a.cover);img.alt=a.title||'';img.decoding='async';img.loading=mobile&&i!==index?'lazy':'eager';card.appendChild(img);updateCardMeta(card,a,i);return card;}
-function createListCard(a,i){const card=document.createElement('button');card.type='button';card.className='albumListCard';card.dataset.index=String(i);card.setAttribute('aria-label',`${a.artist||''} - ${a.title||''}`);card.addEventListener('pointerdown',()=>rememberReturnAlbum(i),{passive:true});card.addEventListener('click',()=>{rememberReturnAlbum(i);index=i;setInfo(filtered[index]);updateListActiveCards();openAlbumAt(i,true);});card.innerHTML=`<div class="albumListCover"><img src="${esc(listCover(a.cover))}" alt="${esc(a.title||'')}" loading="${i===index?'eager':'lazy'}" decoding="async"></div><div class="albumListTitle">${esc(a.title||'Untitled')}</div><div class="albumListArtist">${esc(a.artist||'Unknown Artist')}</div><div class="albumListMeta">${esc([a.year,a.genre].filter(Boolean).join(' · '))}</div>`;card.classList.toggle('active',i===index);return card;}
+function createListCard(a,i){const card=document.createElement('button');card.type='button';card.className='albumListCard';card.dataset.index=String(i);card.setAttribute('aria-label',`${a.artist||''} - ${a.title||''}`);card.addEventListener('pointerdown',e=>startListLongPress(e,i));card.addEventListener('pointermove',cancelListLongPressOnMove);card.addEventListener('pointerup',cancelListLongPress);card.addEventListener('pointercancel',cancelListLongPress);card.addEventListener('pointerleave',cancelListLongPress);card.addEventListener('contextmenu',e=>{e.preventDefault();showListActions(i);});card.addEventListener('click',e=>{if(listLongPressStarted){e.preventDefault();listLongPressStarted=false;return;}rememberReturnAlbum(i);index=i;setInfo(filtered[index]);updateListActiveCards();openAlbumAt(i,true);});card.innerHTML=`<div class="albumListCover"><img src="${esc(listCover(a.cover))}" alt="${esc(a.title||'')}" loading="${i===index?'eager':'lazy'}" decoding="async"></div><div class="albumListTitle">${esc(a.title||'Untitled')}</div><div class="albumListArtist">${esc(a.artist||'Unknown Artist')}</div><div class="albumListMeta">${esc([a.year,a.genre].filter(Boolean).join(' · '))}</div>`;card.classList.toggle('active',i===index);return card;}
 function syncVisibleCards(){const visible=visibleIndexes();const wanted=new Set(visible.map(String));coverflow.querySelectorAll('.albumCard').forEach(card=>{if(!wanted.has(card.dataset.index))card.remove();});const frag=document.createDocumentFragment();visible.forEach(i=>{if(coverflow.querySelector(`.albumCard[data-index="${i}"]`))return;const card=createCard(filtered[i],i);card.style.transition='none';frag.appendChild(card);requestAnimationFrame(()=>{card.style.transition='';});});if(frag.childNodes.length)coverflow.appendChild(frag);}
 function updateMobileActiveCard(){coverflow.querySelectorAll('.albumCard').forEach(card=>card.classList.toggle('active',Number(card.dataset.index)===index));}
 function updateListActiveCards(){coverflow.querySelectorAll('.albumListCard').forEach(card=>card.classList.toggle('active',Number(card.dataset.index)===index));}
@@ -359,6 +378,16 @@ function nextAlbum(){queueAlbumMove(1);}
 function setSearch(v){searchQuery=v;index=0;applyFilters();}function setGenre(v){genreFilter=v;index=0;applyFilters();}function setSort(v){sortMode=v;const sel=$('sortSelect');if(sel&&sel.value!==v)sel.value=v;index=0;applyFilters();}
 function selectAdminGenre(v){if(!v)return;$('inputGenre').value=v;}
 function syncAdminGenrePreset(){const preset=$('genrePresetSelect');if(!preset)return;const value=$('inputGenre')?.value.trim()||'';const exists=[...preset.options].some(option=>option.value===value);preset.value=exists?value:'';}
+function libraryIndexForAlbum(a){return library.findIndex(item=>item===a||uid(item)===uid(a));}
+function listActionAlbum(){return listActionFilteredIndex===null?null:filtered[listActionFilteredIndex]||null;}
+function listActionLibraryIndex(){const a=listActionAlbum();return a?libraryIndexForAlbum(a):-1;}
+function startListLongPress(e,i){rememberReturnAlbum(i);listLongPressStarted=false;listLongPressPoint={x:e.clientX,y:e.clientY};clearTimeout(listLongPressTimer);listLongPressTimer=setTimeout(()=>{listLongPressStarted=true;showListActions(i);},620);}
+function cancelListLongPress(){clearTimeout(listLongPressTimer);listLongPressTimer=null;listLongPressPoint=null;}
+function cancelListLongPressOnMove(e){if(!listLongPressPoint)return;const moved=Math.hypot(e.clientX-listLongPressPoint.x,e.clientY-listLongPressPoint.y);if(moved>12)cancelListLongPress();}
+function showListActions(i){cancelListLongPress();const a=filtered[i];if(!a)return;listActionFilteredIndex=i;index=i;setInfo(a);updateListActiveCards();$('listActionCover').src=thumbCover(a.cover);$('listActionCover').alt=a.title||'';$('listActionTitle').textContent=a.title||'Untitled';$('listActionArtist').textContent=a.artist||'Unknown Artist';const panel=$('listActionPanel');panel.classList.add('show');panel.setAttribute('aria-hidden','false');}
+function closeListActions(){const panel=$('listActionPanel');if(!panel)return;panel.classList.remove('show');panel.setAttribute('aria-hidden','true');listActionFilteredIndex=null;cancelListLongPress();}
+function editListActionAlbum(){const i=listActionLibraryIndex();if(i<0){closeListActions();toast('앨범을 찾지 못했습니다.');return;}closeListActions();closeMenu();openAdmin();editItem(i);}
+async function deleteListActionAlbum(){const i=listActionLibraryIndex();closeListActions();if(i<0){toast('앨범을 찾지 못했습니다.');return;}await deleteItem(i);}
 function currentAlbum(){return filtered[index]||null;}
 function shareTitle(a){return[a?.title,a?.artist].filter(Boolean).join(' - ')||'ColdishWave';}
 function shareUrl(a){return webAppleUrl(a?.appleMusic||playbackUrl(a));}
@@ -390,7 +419,7 @@ function toggleViewMode(){viewMode=isListMode()?'coverflow':'list';localStorage.
 function togglePlaybackMode(){playbackMode=playbackMode==='shortcut'?'direct':'shortcut';localStorage.setItem(PLAYBACK_MODE_KEY,playbackMode);setInfo(filtered[index]);toast(playbackMode==='shortcut'?'단축어 재생 모드입니다.':'직접 열기 모드입니다.');}
 function toast(msg){const el=$('toast');el.textContent=msg;el.classList.add('show');clearTimeout(window.__toast);window.__toast=setTimeout(()=>el.classList.remove('show'),1800);}
 function isTypingTarget(el){return !!el&&['INPUT','TEXTAREA','SELECT'].includes(el.tagName);}
-window.addEventListener('keydown',e=>{if(adminPanel.classList.contains('show')){if(e.key==='Escape')closeAdmin();return;}if($('menuPanel')?.classList.contains('show')&&e.key==='Escape'){closeMenu();return;}if(isTypingTarget(e.target))return;if(e.key==='ArrowLeft'||(isListMode()&&e.key==='ArrowUp')){e.preventDefault();prevAlbum();}if(e.key==='ArrowRight'||(isListMode()&&e.key==='ArrowDown')){e.preventDefault();nextAlbum();}if(e.key==='Enter'){e.preventDefault();openCurrent();}});
+window.addEventListener('keydown',e=>{if($('listActionPanel')?.classList.contains('show')){if(e.key==='Escape')closeListActions();return;}if(adminPanel.classList.contains('show')){if(e.key==='Escape')closeAdmin();return;}if($('menuPanel')?.classList.contains('show')&&e.key==='Escape'){closeMenu();return;}if(isTypingTarget(e.target))return;if(e.key==='ArrowLeft'||(isListMode()&&e.key==='ArrowUp')){e.preventDefault();prevAlbum();}if(e.key==='ArrowRight'||(isListMode()&&e.key==='ArrowDown')){e.preventDefault();nextAlbum();}if(e.key==='Enter'){e.preventDefault();openCurrent();}});
 window.addEventListener('wheel',e=>{if(isListMode()||isMobileView()||adminPanel.classList.contains('show')||$('menuPanel')?.classList.contains('show'))return;const delta=normalizedWheelDelta(e);if(!delta)return;wheelDelta+=delta;clearTimeout(wheelResetTimer);wheelResetTimer=setTimeout(()=>{wheelDelta=0;},120);const steps=wheelMoveSteps(wheelDelta);if(!steps)return;jumpAlbumMove((wheelDelta>0?1:-1)*steps);wheelDelta=0;},{passive:true});
 coverflow.addEventListener('scroll',()=>{if(!isListMode()&&isMobileView())scheduleMobileScrollInfo();},{passive:true});
 coverflow.addEventListener('pointerdown',e=>{if(isListMode()||isMobileView())return;const card=e.target.closest?.('.albumCard');dragging=true;suppressCardClick=false;tapCardIndex=card?Number(card.dataset.index):null;startX=lastX=e.clientX;startY=lastY=e.clientY;startTime=performance.now();coverflow.setPointerCapture?.(e.pointerId);});
