@@ -177,7 +177,7 @@ body.list-mode .counter,body.list-mode .genreHud{display:none}
 	        <div class="searchbar menuSearchbar">
           <input id="searchInput" type="search" placeholder="앨범 / 아티스트 검색" oninput="setSearch(this.value)">
           <select id="genreSelect" onchange="setGenre(this.value)"><option value="All">All Genres</option><option value="Favorites">Favorites</option></select>
-          <select onchange="setSort(this.value)"><option value="custom">등록 순서</option><option value="artist">아티스트 이름순</option><option value="year-desc">최신 연도순</option><option value="year">오래된 연도순</option><option value="title">앨범 제목순</option><option value="random" selected>랜덤</option></select>
+          <select id="sortSelect" onchange="setSort(this.value)"><option value="custom">등록 순서</option><option value="artist">아티스트 이름순</option><option value="year-desc">최신 연도순</option><option value="year">오래된 연도순</option><option value="title">앨범 제목순</option><option value="random" selected>랜덤</option></select>
 	        </div>
 	      </div>
 
@@ -195,6 +195,8 @@ body.list-mode .counter,body.list-mode .genreHud{display:none}
         <button class="mainBtn" onclick="toggleFavoriteCurrent()" id="favoriteBtn">☆ Favorite</button>
         <button class="mainBtn" id="fullscreenBtn" onclick="toggleFullscreen()">전체화면</button>
         <button class="mainBtn" onclick="openAdmin(); closeMenu();">관리자 모드</button>
+        <button class="mainBtn" onclick="reshuffleRandom()">랜덤 다시 섞기</button>
+        <button class="mainBtn" onclick="shareCurrentAlbum()">공유/복사</button>
         <button class="mainBtn" id="playbackModeBtn" onclick="togglePlaybackMode()">재생 방식: 직접</button>
       </div>
 
@@ -232,7 +234,10 @@ const ADMIN_KEY_STORAGE='APPLE_MUSIC_COVERFLOW_ADMIN_KEY_V1';
 const FAVORITE_KEY='APPLE_MUSIC_COVERFLOW_FAVORITES_V1';
 const PLAYBACK_MODE_KEY='APPLE_MUSIC_COVERFLOW_PLAYBACK_MODE_V1';
 const VIEW_MODE_KEY='APPLE_MUSIC_COVERFLOW_VIEW_MODE_V1';
+const RECENT_KEY='APPLE_MUSIC_COVERFLOW_RECENT_V1';
+const RANDOM_SALT_KEY='APPLE_MUSIC_COVERFLOW_RANDOM_SALT_V1';
 const SHORTCUT_NAME='Play Apple Music URL';
+const RECENT_LIMIT=36;
 const NAV_INTERVAL=180;
 const WHEEL_MIN=18;
 const WHEEL_STEP=90;
@@ -246,10 +251,13 @@ const $=id=>document.getElementById(id);
 const coverflow=$('coverflow'),adminPanel=$('adminPanel'),adminList=$('adminList'),ambientImage=$('ambientImage');
 const albumTitle=$('albumTitle'),albumArtist=$('albumArtist'),albumMeta=$('albumMeta'),appleLink=$('appleLink'),counter=$('counter'),genreHud=$('genreHud'),menuCounter=$('menuCounter'),favoriteBtn=$('favoriteBtn'),playbackModeBtn=$('playbackModeBtn');
 let favorites=JSON.parse(localStorage.getItem(FAVORITE_KEY)||'[]');
+let recentAlbumIds=JSON.parse(localStorage.getItem(RECENT_KEY)||'[]');
 let playbackMode=localStorage.getItem(PLAYBACK_MODE_KEY)||'direct';
 let viewMode=localStorage.getItem(VIEW_MODE_KEY)||'coverflow';
 if(!['coverflow','list'].includes(viewMode))viewMode='coverflow';
 let adminKey=localStorage.getItem(ADMIN_KEY_STORAGE)||'';
+let randomSalt=localStorage.getItem(RANDOM_SALT_KEY)||String(Date.now());
+if(!localStorage.getItem(RANDOM_SALT_KEY))localStorage.setItem(RANDOM_SALT_KEY,randomSalt);
 const sampleAlbums=[
 {artist:'Adrianne Lenker',title:'Bright Future',genre:'am6',year:2024,cover:'https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/db/d5/b5/dbd5b594-1e28-23e0-c4b2-26ddbe473dfb/191400064973.png/3000x3000bb.webp',appleMusic:'https://music.apple.com/kr/album/bright-future/1721534468'},
 {artist:'Radiohead',title:'In Rainbows',genre:'pm11',year:2007,cover:'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/51/44/69/514469c8-13e5-0d6e-526f-9c41af788ea7/634904032463.png/3000x3000bb.webp',appleMusic:'https://music.apple.com/kr/album/in-rainbows/1440643153'},
@@ -267,7 +275,12 @@ async function persistLibrary(message){save();const synced=await publishRemoteAl
 async function load(){let local=null;try{local=normalizeAlbums(JSON.parse(localStorage.getItem(STORAGE_KEY)||'null'));}catch(e){}const remote=await fetchRemoteAlbums();if(remote){library=remote;save();return;}const published=await fetchPublishedAlbums();if(published){const sig=dataSignature(published),oldSig=localStorage.getItem(PUBLISHED_HASH_KEY);if(!local?.length||(oldSig&&oldSig!==sig)){library=published;localStorage.setItem(PUBLISHED_HASH_KEY,sig);save();return;}if(!oldSig)localStorage.setItem(PUBLISHED_HASH_KEY,sig);}library=local?.length?local:sampleAlbums.map(normalizeAlbum);save();}
 function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(library));}
 function saveFav(){localStorage.setItem(FAVORITE_KEY,JSON.stringify(favorites));}
+function saveRecent(){localStorage.setItem(RECENT_KEY,JSON.stringify(recentAlbumIds.slice(0,RECENT_LIMIT)));}
 function uid(a){return `${a.artist||''}__${a.title||''}__${a.appleMusic||''}`;}
+function hashString(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+function stableRandomScore(a){return hashString(`${randomSalt}:${uid(a)}`);}
+function recentRank(a){const i=recentAlbumIds.indexOf(uid(a));return i<0?Number.MAX_SAFE_INTEGER:i;}
+function recordRecentAlbum(a){if(!a)return;const id=uid(a);recentAlbumIds=[id,...recentAlbumIds.filter(v=>v!==id)].slice(0,RECENT_LIMIT);saveRecent();}
 function albumNumberText(i=index,total=filtered.length){if(!total)return'00 / 00';const width=Math.max(2,String(total).length);return`${String(i+1).padStart(width,'0')} / ${String(total).padStart(width,'0')}`;}
 function albumGenreText(a){const genre=String(a?.genre||'').trim();return genre?`장르 ${genre}`:'장르 미지정';}
 function albumPositionText(i=index,total=filtered.length){return total?`${i+1}번째 / 총 ${total}장`:'0번째 / 총 0장';}
@@ -295,8 +308,8 @@ function playbackTargetUrl(url){return playbackMode==='shortcut'?shortcutRunUrl(
 function directPlaybackTargetUrl(url){return appleAppUrl(url,true);}
 function openAppleMusic(url,direct=false){const target=direct?directPlaybackTargetUrl(url):playbackTargetUrl(url);if(!target)return;location.assign(target);}
 function getGenreValues(){return[...new Set(library.map(a=>String(a.genre||'').trim()).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b)));}
-function buildGenres(){const sel=$('genreSelect');const old=sel.value;const genres=getGenreValues();sel.innerHTML='<option value="All">All Genres</option><option value="Favorites">Favorites</option>'+genres.map(g=>`<option value="${esc(g)}">${esc(g)}</option>`).join('');sel.value=[...genres,'All','Favorites'].includes(old)?old:'All';const preset=$('genrePresetSelect');if(preset){const oldPreset=preset.value;preset.innerHTML='<option value="">기존 장르 선택</option>'+genres.map(g=>`<option value="${esc(g)}">${esc(g)}</option>`).join('');preset.value=genres.includes(oldPreset)?oldPreset:'';syncAdminGenrePreset();}}
-function applyFilters(){let list=[...library];if(searchQuery){const q=searchQuery.toLowerCase();list=list.filter(a=>String(a.title).toLowerCase().includes(q)||String(a.artist).toLowerCase().includes(q));}if(genreFilter==='Favorites')list=list.filter(a=>favorites.includes(uid(a)));else if(genreFilter!=='All')list=list.filter(a=>a.genre===genreFilter);if(sortMode==='artist')list.sort((a,b)=>String(a.artist).localeCompare(String(b.artist))||String(a.title).localeCompare(String(b.title)));if(sortMode==='title')list.sort((a,b)=>String(a.title).localeCompare(String(b.title)));if(sortMode==='year')list.sort((a,b)=>(Number(a.year)||0)-(Number(b.year)||0));if(sortMode==='year-desc')list.sort((a,b)=>(Number(b.year)||0)-(Number(a.year)||0));if(sortMode==='random')list=shuffle(list);filtered=list;index=Math.min(index,Math.max(0,filtered.length-1));render();}
+function buildGenres(){const sel=$('genreSelect');const old=sel.value;const genres=getGenreValues();sel.innerHTML='<option value="All">All Genres</option><option value="Favorites">Favorites</option><option value="Recent">최근 열어봄</option>'+genres.map(g=>`<option value="${esc(g)}">${esc(g)}</option>`).join('');sel.value=[...genres,'All','Favorites','Recent'].includes(old)?old:'All';const preset=$('genrePresetSelect');if(preset){const oldPreset=preset.value;preset.innerHTML='<option value="">기존 장르 선택</option>'+genres.map(g=>`<option value="${esc(g)}">${esc(g)}</option>`).join('');preset.value=genres.includes(oldPreset)?oldPreset:'';syncAdminGenrePreset();}}
+function applyFilters(){let list=[...library];if(searchQuery){const q=searchQuery.toLowerCase();list=list.filter(a=>String(a.title).toLowerCase().includes(q)||String(a.artist).toLowerCase().includes(q));}if(genreFilter==='Favorites')list=list.filter(a=>favorites.includes(uid(a)));else if(genreFilter==='Recent')list=list.filter(a=>recentAlbumIds.includes(uid(a)));else if(genreFilter!=='All')list=list.filter(a=>a.genre===genreFilter);if(genreFilter==='Recent')list.sort((a,b)=>recentRank(a)-recentRank(b));else if(sortMode==='artist')list.sort((a,b)=>String(a.artist).localeCompare(String(b.artist))||String(a.title).localeCompare(String(b.title)));else if(sortMode==='title')list.sort((a,b)=>String(a.title).localeCompare(String(b.title)));else if(sortMode==='year')list.sort((a,b)=>(Number(a.year)||0)-(Number(b.year)||0));else if(sortMode==='year-desc')list.sort((a,b)=>(Number(b.year)||0)-(Number(a.year)||0));else if(sortMode==='random')list.sort((a,b)=>stableRandomScore(a)-stableRandomScore(b));filtered=list;index=Math.min(index,Math.max(0,filtered.length-1));render();}
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a;}
 function isMobileView(){return window.innerWidth<900;}
 function isListMode(){return viewMode==='list';}
@@ -335,7 +348,7 @@ function preloadNearbyCovers(){clearTimeout(preloadTimer);preloadTimer=setTimeou
 function updatePlaybackModeButton(){playbackModeBtn.textContent=playbackMode==='shortcut'?'재생 방식: 단축어':'재생 방식: 직접';}
 function updateAppleLinkHref(url){if(appleLink)appleLink.href=url;}
 function setInfo(a){updatePlaybackModeButton();if(!a){albumTitle.textContent='앨범을 추가하세요';albumArtist.textContent='관리자 모드에서 Apple Music 앨범 링크를 입력하면 됩니다.';albumMeta.textContent='앨범 커버 클릭 시 Apple Music 앱으로 바로 이동합니다.';updateAppleLinkHref(playbackMode==='shortcut'?shortcutRunUrl('https://music.apple.com/kr'):appleAppUrl('https://music.apple.com/kr'));ambientImage.style.backgroundImage='';lastAmbientCover='';counter.textContent='00 / 00';genreHud.textContent='장르 미지정';menuCounter.textContent='00 / 00';favoriteBtn.textContent='☆ Favorite';return;}albumTitle.textContent=a.title||'';albumArtist.textContent=a.artist||'';const genre=albumGenreText(a);albumMeta.textContent=[a.year,genre,albumPositionText()].filter(Boolean).join(' • ');updateAppleLinkHref(playbackTargetUrl(playbackUrl(a)));const bg=ambientCover(a.cover);if(bg!==lastAmbientCover){ambientImage.style.backgroundImage=bg?`url("${bg}")`:'';lastAmbientCover=bg;}const n=albumNumberText();counter.textContent=n;genreHud.textContent=genre;menuCounter.textContent=n;favoriteBtn.textContent=favorites.includes(uid(a))?'★ Favorited':'☆ Favorite';}
-function openAlbumAt(i,direct=false){const a=filtered[i];if(!a)return;openAppleMusic(playbackUrl(a),direct);if(!a.firstTrackId)hydrateFirstTrack(a).then(item=>{if(item?.firstTrackId)updateAppleLinkHref(playbackTargetUrl(playbackUrl(item)));});}
+function openAlbumAt(i,direct=false){const a=filtered[i];if(!a)return;recordRecentAlbum(a);openAppleMusic(playbackUrl(a),direct);if(!a.firstTrackId)hydrateFirstTrack(a).then(item=>{if(item?.firstTrackId)updateAppleLinkHref(playbackTargetUrl(playbackUrl(item)));});}
 function onAlbumClick(i){if(suppressCardClick){suppressCardClick=false;return;}rememberReturnAlbum(i);openAlbumAt(i,true);}
 function openCurrent(){openAlbumAt(index);}
 function setAlbumIndex(i,opts={}){if(!filtered.length)return;const old=index;index=(i+filtered.length)%filtered.length;if(isListMode()){setInfo(filtered[index]);updateListActiveCards();scrollListToIndex(index,opts.behavior||'smooth');preloadNearbyCovers();}else if(isMobileView()){setInfo(filtered[index]);updateMobileActiveCard();scrollMobileToIndex(index,opts.behavior||'smooth');preloadNearbyCovers();}else schedulePositionCards();if(!opts.skipReturn&&old!==index)scheduleReturnToAnchor();}
@@ -349,9 +362,16 @@ function flushQueuedMove(){navLocked=false;if(!queuedDirection)return;const dir=
 function queueAlbumMove(dir){if(!filtered.length)return;ensureReturnAnchor();if(navLocked){queuedDirection=dir;return;}setAlbumIndex(index+dir);navLocked=true;setTimeout(flushQueuedMove,NAV_INTERVAL);}
 function prevAlbum(){queueAlbumMove(-1);}
 function nextAlbum(){queueAlbumMove(1);}
-function setSearch(v){searchQuery=v;index=0;applyFilters();}function setGenre(v){genreFilter=v;index=0;applyFilters();}function setSort(v){sortMode=v;index=0;applyFilters();}
+function setSearch(v){searchQuery=v;index=0;applyFilters();}function setGenre(v){genreFilter=v;index=0;applyFilters();}function setSort(v){sortMode=v;const sel=$('sortSelect');if(sel&&sel.value!==v)sel.value=v;index=0;applyFilters();}
 function selectAdminGenre(v){if(!v)return;$('inputGenre').value=v;}
 function syncAdminGenrePreset(){const preset=$('genrePresetSelect');if(!preset)return;const value=$('inputGenre')?.value.trim()||'';const exists=[...preset.options].some(option=>option.value===value);preset.value=exists?value:'';}
+function currentAlbum(){return filtered[index]||null;}
+function reshuffleRandom(){randomSalt=`${Date.now()}_${Math.random().toString(36).slice(2)}`;localStorage.setItem(RANDOM_SALT_KEY,randomSalt);if(sortMode!=='random')setSort('random');else{index=0;applyFilters();}toast('랜덤 순서를 다시 섞었습니다.');}
+function shareTitle(a){return[a?.title,a?.artist].filter(Boolean).join(' - ')||'ColdishWave';}
+function shareUrl(a){return webAppleUrl(a?.appleMusic||playbackUrl(a));}
+function fallbackCopy(text){const ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.left='-999px';ta.style.top='0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy');}catch(e){}ta.remove();return ok;}
+async function copyText(text){try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(text);return true;}}catch(e){}return fallbackCopy(text);}
+async function shareCurrentAlbum(){const a=currentAlbum();if(!a){toast('공유할 앨범이 없습니다.');return;}const title=shareTitle(a),url=shareUrl(a);if(navigator.share){try{await navigator.share({title,text:`${title} · ColdishWave`,url});return;}catch(e){if(e?.name==='AbortError')return;}}const copied=await copyText(url);toast(copied?'앨범 링크를 복사했습니다.':'링크를 복사하지 못했습니다.');}
 function toggleFavoriteCurrent(){const a=filtered[index];if(!a)return;const id=uid(a);favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];saveFav();applyFilters();toast(favorites.includes(id)?'즐겨찾기에 추가되었습니다.':'즐겨찾기에서 제거되었습니다.');}
 function openAdmin(){adminPanel.classList.add('show');$('inputAdminKey').value=adminKey;renderAdmin();}function closeAdmin(){adminPanel.classList.remove('show');editingIndex=null;$('saveBtn').textContent='앨범 추가';}
 function clearForm(){editingIndex=null;$('inputLink').value='';$('inputGenre').value='';$('inputYear').value='';$('inputTitle').value='';$('inputArtist').value='';$('inputCover').value='';syncAdminGenrePreset();$('saveBtn').textContent='앨범 추가';}
@@ -385,7 +405,7 @@ coverflow.addEventListener('pointermove',e=>{if(!dragging||isListMode()||isMobil
 coverflow.addEventListener('pointerup',e=>{if(isListMode()||isMobileView()){dragging=false;return;}if(!dragging)return;const diffX=lastX-startX,diffY=lastY-startY,moved=Math.hypot(diffX,diffY),duration=performance.now()-startTime;dragging=false;if(Math.abs(diffX)>SWIPE_MIN&&Math.abs(diffX)>Math.abs(diffY)){suppressCardClick=true;const steps=swipeSteps(diffX,duration);jumpAlbumMove((diffX<0?1:-1)*steps);setTimeout(()=>{suppressCardClick=false;},300);}else if(tapCardIndex!==null&&moved<14){e.preventDefault();suppressCardClick=true;openAlbumAt(tapCardIndex,true);setTimeout(()=>{suppressCardClick=false;},500);}tapCardIndex=null;});
 coverflow.addEventListener('pointercancel',()=>{dragging=false;suppressCardClick=false;tapCardIndex=null;});
 window.addEventListener('resize',()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(schedulePositionCards);});
-if('serviceWorker'in navigator&&location.protocol!=='file:')window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});
+if('serviceWorker'in navigator&&location.protocol!=='file:')window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').then(reg=>{reg.addEventListener('updatefound',()=>{const worker=reg.installing;if(!worker)return;worker.addEventListener('statechange',()=>{if(worker.state==='installed'&&navigator.serviceWorker.controller)toast('새 버전이 준비되었습니다. 앱을 다시 열면 적용됩니다.');});});}).catch(()=>{});});
 async function init(){await load();buildGenres();applyFilters();}
 init();
 </script>
