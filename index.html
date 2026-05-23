@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#0A84FF" />
+<meta name="theme-color" content="#071014" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="ColdishWave" />
@@ -146,6 +146,210 @@ body.list-mode .counter,body.list-mode .genreHud{display:none}
 @keyframes sheetIn{from{opacity:0;transform:translateX(-50%) translateY(10px) scale(.98)}to{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}}
 @media (max-width:900px){body.list-mode .stage{position:absolute;inset:0;height:100vh;height:100dvh;padding:calc(56px + var(--safe-top)) 0 0}.albumListGrid{grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:24px 14px;padding-bottom:calc(42px + var(--safe-bottom))}.albumListTitle{height:16px;font-size:13px;line-height:16px}.albumListArtist{font-size:12px}.albumListMeta{font-size:10px}}
 @media (max-width:560px){body.list-mode .stage{padding-top:calc(54px + var(--safe-top))}.albumListGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 12px;padding-left:calc(10px + var(--safe-left));padding-right:calc(10px + var(--safe-right))}.albumListCover{border-radius:5px}}
+
+/* Modern visual refresh: presentation-only overrides */
+:root{
+  --bg:#05070a;
+  --text:#f8fbff;
+  --sub:rgba(232,241,247,.72);
+  --muted:rgba(232,241,247,.48);
+  --line:rgba(255,255,255,.15);
+  --panel:rgba(9,14,20,.72);
+  --panel2:rgba(255,255,255,.09);
+  --accent:#58e0d2;
+  --accent-strong:#19b8a7;
+  --accent-hot:#ff5c7a;
+  --accent-warm:#f2c94c;
+  --ok:#78e08f;
+  --danger:#ff637d;
+  --radius:18px;
+  --shadow-soft:0 18px 60px rgba(0,0,0,.38);
+  --shadow-hard:0 28px 110px rgba(0,0,0,.58);
+  --glass-hi:rgba(255,255,255,.13);
+  --glass-lo:rgba(255,255,255,.055);
+  --icon-grid:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z'/%3E%3C/svg%3E");
+  --icon-expand:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round' d='M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5M3 8l6-5M21 8l-6-5M3 16l6 5M21 16l-6 5'/%3E%3C/svg%3E");
+  --icon-gear:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' d='M12 8.4a3.6 3.6 0 1 0 0 7.2 3.6 3.6 0 0 0 0-7.2ZM19.4 15a8 8 0 0 0 .1-1.1l2-1.6-2-3.5-2.5 1a7.4 7.4 0 0 0-1.9-1.1L14.8 6H9.2l-.4 2.7a7.4 7.4 0 0 0-1.9 1.1l-2.5-1-2 3.5 2 1.6a8 8 0 0 0 .1 1.1l-2 1.7 2 3.4 2.6-1a7.4 7.4 0 0 0 1.8 1l.4 2.9h5.6l.4-2.9a7.4 7.4 0 0 0 1.8-1l2.6 1 2-3.4-2.3-1.7Z'/%3E%3C/svg%3E");
+  --icon-share:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round' d='M18 8a3 3 0 1 0-2.8-4M6 14a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM18 16a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM8.7 15.5l6.6-3.9M8.7 18.5l6.6 3.9'/%3E%3C/svg%3E");
+  --icon-play:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M8 5.7v12.6c0 1 .95 1.58 1.78 1.02l9.2-6.3a1.22 1.22 0 0 0 0-2.04l-9.2-6.3C8.95 4.12 8 4.7 8 5.7Z'/%3E%3C/svg%3E");
+  --icon-plus:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2.8' stroke-linecap='round' d='M12 5v14M5 12h14'/%3E%3C/svg%3E");
+  --icon-reset:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round' d='M4 4v6h6M5.3 15.1A7.7 7.7 0 1 0 6.4 7.2L4 10'/%3E%3C/svg%3E");
+  --icon-download:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round' d='M12 3v11M7 10l5 5 5-5M5 20h14'/%3E%3C/svg%3E");
+  --icon-upload:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round' d='M12 15V4M7 9l5-5 5 5M5 20h14'/%3E%3C/svg%3E");
+  --icon-trash:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round' d='M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7l1-3h4l1 3'/%3E%3C/svg%3E");
+  --icon-edit:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round' d='M4 20h4L19.3 8.7a2.1 2.1 0 0 0-3-3L5 17v3ZM14.8 7.2l2 2'/%3E%3C/svg%3E");
+  --icon-x:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2.8' stroke-linecap='round' d='M6 6l12 12M18 6 6 18'/%3E%3C/svg%3E");
+  --icon-eye:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' d='M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z'/%3E%3Ccircle cx='12' cy='12' r='3' fill='black'/%3E%3C/svg%3E");
+}
+
+body *{letter-spacing:0}
+html,body{background:var(--bg);color:var(--text);font-family:Inter,"Noto Sans CJK KR","Noto Sans KR","Source Han Sans KR","Apple SD Gothic Neo",sans-serif}
+button{-webkit-tap-highlight-color:transparent;transition:background .18s ease,border-color .18s ease,color .18s ease,box-shadow .18s ease,transform .18s ease,opacity .18s ease}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid rgba(88,224,210,.9);outline-offset:3px}
+
+#ambient{background:var(--bg)}
+#ambientImage{filter:blur(42px) saturate(122%) brightness(.84);opacity:.76}
+#ambientShade{background:linear-gradient(180deg,rgba(5,7,10,.36),rgba(5,7,10,.78) 62%,var(--bg)),linear-gradient(118deg,rgba(88,224,210,.18),transparent 38%,rgba(255,92,122,.16) 78%,rgba(242,201,76,.10))}
+
+.brand h1{font-size:42px;line-height:.96;font-weight:900}
+.brand p{color:var(--muted)}
+.albumTitle{font-size:48px;line-height:1;font-weight:900}
+.albumArtist{font-size:20px;color:var(--sub)}
+.albumMeta{color:var(--muted)}
+
+.viewToggleBtn,.hamburgerBtn,.navBtn,.menuClose,.closeBtn{
+  border-color:rgba(255,255,255,.18);
+  background:linear-gradient(180deg,var(--glass-hi),var(--glass-lo));
+  color:var(--text);
+  box-shadow:0 18px 54px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.12);
+}
+.viewToggleBtn:hover,.hamburgerBtn:hover,.navBtn:hover,.menuClose:hover,.closeBtn:hover{background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.08));border-color:rgba(88,224,210,.42);box-shadow:0 22px 64px rgba(0,0,0,.42),0 0 0 1px rgba(88,224,210,.16) inset}
+.viewToggleBtn:active,.hamburgerBtn:active,.navBtn:active,.menuClose:active,.closeBtn:active,.mainBtn:active,.smallBtn:active,.iconBtn:active{transform:translateY(0) scale(.98)}
+.hamburgerBtn span{width:19px;height:1.5px;background:linear-gradient(90deg,#fff,var(--accent));box-shadow:0 0 14px rgba(88,224,210,.25)}
+.modeIcon i{border-radius:3px;background:linear-gradient(135deg,#fff,var(--accent));box-shadow:none}
+body.list-mode .modeIcon i{box-shadow:0 0 0 1.5px rgba(255,255,255,.84),0 8px 18px rgba(0,0,0,.28)}
+
+.counter,.genreHud{
+  min-height:36px;
+  border-color:rgba(255,255,255,.16);
+  background:linear-gradient(180deg,rgba(9,14,20,.70),rgba(9,14,20,.42));
+  color:rgba(248,251,255,.88);
+  box-shadow:0 14px 40px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.08);
+}
+.genreHud{color:rgba(88,224,210,.92)}
+
+.menuBox,.adminBox,.listActionSheet{
+  border-color:rgba(255,255,255,.16);
+  background:linear-gradient(180deg,rgba(15,22,30,.92),rgba(6,9,14,.94));
+  box-shadow:var(--shadow-hard),inset 0 1px 0 rgba(255,255,255,.10);
+}
+.menuBox{border-radius:22px;padding:18px}
+.adminBox{border-radius:22px}
+.listActionSheet{border-radius:18px}
+.menuDim,.adminDim,.listActionDim{background:rgba(1,4,7,.58);backdrop-filter:blur(10px)}
+.menuSectionTitle,.adminList h3{color:rgba(248,251,255,.70);font-size:12px;text-transform:uppercase;font-weight:900}
+
+.searchbar input,.searchbar select,.field input,.field select,.field textarea{
+  border-color:rgba(255,255,255,.14);
+  border-radius:12px;
+  background:linear-gradient(180deg,rgba(255,255,255,.105),rgba(255,255,255,.052));
+  color:var(--text);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+}
+.searchbar input:focus,.searchbar select:focus,.field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(88,224,210,.55);box-shadow:0 0 0 4px rgba(88,224,210,.11),inset 0 1px 0 rgba(255,255,255,.10)}
+.field label{color:var(--sub);font-weight:850}
+
+.mainBtn,.smallBtn,.iconBtn,.listActionButtons button,.pill{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  border-color:rgba(255,255,255,.14);
+  border-radius:12px;
+  background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.06));
+  color:var(--text);
+  box-shadow:0 10px 28px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.10);
+  font-weight:850;
+}
+.mainBtn{height:46px;padding:0 15px}
+.smallBtn{height:42px;padding:0 13px}
+.iconBtn{height:34px;min-width:34px;border-radius:10px}
+.mainBtn:hover,.smallBtn:hover,.iconBtn:hover,.listActionButtons button:hover,.pill:hover{transform:translateY(-1px);border-color:rgba(88,224,210,.42);background:linear-gradient(180deg,rgba(255,255,255,.17),rgba(255,255,255,.085));box-shadow:0 14px 36px rgba(0,0,0,.24),0 0 0 1px rgba(88,224,210,.13) inset}
+.mainBtn.primary,.smallBtn.primary{background:linear-gradient(135deg,var(--accent),var(--accent-strong));border-color:rgba(88,224,210,.68);color:#031314;box-shadow:0 16px 40px rgba(25,184,167,.24)}
+.mainBtn.primary:hover,.smallBtn.primary:hover{background:linear-gradient(135deg,#75f3e7,var(--accent));color:#031314}
+.smallBtn.ok{background:linear-gradient(180deg,rgba(120,224,143,.20),rgba(120,224,143,.09));border-color:rgba(120,224,143,.36);color:#d9ffe2}
+.smallBtn.danger,.iconBtn.del,.listActionButtons button.danger{background:linear-gradient(180deg,rgba(255,99,125,.18),rgba(255,99,125,.08));border-color:rgba(255,99,125,.38);color:#ffd1d9}
+
+.mainBtn::before,.smallBtn::before,.listActionButtons button::before,.iconBtn::before{
+  content:"";
+  width:15px;
+  height:15px;
+  flex:0 0 15px;
+  display:none;
+  background:currentColor;
+  opacity:.92;
+  -webkit-mask:var(--icon) center/contain no-repeat;
+  mask:var(--icon) center/contain no-repeat;
+}
+#viewModeBtn{--icon:var(--icon-grid)}
+#fullscreenBtn{--icon:var(--icon-expand)}
+.mainBtn[onclick*="openAdmin"]{--icon:var(--icon-gear)}
+.mainBtn[onclick*="shareCurrentAlbum"]{--icon:var(--icon-share)}
+#playbackModeBtn{--icon:var(--icon-play)}
+#saveBtn{--icon:var(--icon-plus)}
+.smallBtn[onclick*="clearForm"]{--icon:var(--icon-reset)}
+.smallBtn[onclick*="export"]{--icon:var(--icon-download)}
+.smallBtn[onclick*="importData"]{--icon:var(--icon-upload)}
+.smallBtn[onclick*="clearAll"]{--icon:var(--icon-trash)}
+.listActionButtons button[onclick*="edit"]{--icon:var(--icon-edit)}
+.listActionButtons button[onclick*="delete"]{--icon:var(--icon-trash)}
+.listActionButtons button[onclick*="close"]{--icon:var(--icon-x)}
+.iconBtn[onclick*="showLibraryItem"]{--icon:var(--icon-eye)}
+.iconBtn[onclick*="editItem"]{--icon:var(--icon-edit)}
+.iconBtn[onclick*="deleteItem"]{--icon:var(--icon-trash)}
+#viewModeBtn::before,#fullscreenBtn::before,.mainBtn[onclick*="openAdmin"]::before,.mainBtn[onclick*="shareCurrentAlbum"]::before,#playbackModeBtn::before,#saveBtn::before,.smallBtn[onclick*="clearForm"]::before,.smallBtn[onclick*="export"]::before,.smallBtn[onclick*="importData"]::before,.smallBtn[onclick*="clearAll"]::before,.listActionButtons button::before,.iconBtn[onclick*="showLibraryItem"]::before,.iconBtn[onclick*="editItem"]::before,.iconBtn[onclick*="deleteItem"]::before{display:block}
+
+.menuActions{gap:10px}
+.menuActions .mainBtn{height:46px;font-size:13px;padding:0 12px}
+.notice,.empty{
+  border-color:rgba(255,255,255,.13);
+  border-radius:10px;
+  background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.035));
+  color:var(--muted);
+}
+.toast{background:rgba(248,251,255,.96);color:#081014;box-shadow:0 18px 54px rgba(0,0,0,.34)}
+
+.albumCard{
+  border-radius:18px;
+  background:#111820;
+  border-color:rgba(255,255,255,.12);
+  box-shadow:0 38px 110px rgba(0,0,0,.54),0 0 0 1px rgba(255,255,255,.12);
+}
+.albumCard.active{box-shadow:0 48px 140px rgba(0,0,0,.66),0 0 0 1px rgba(88,224,210,.30),0 0 80px rgba(88,224,210,.10)}
+.albumCard::after{background:linear-gradient(130deg,rgba(255,255,255,.20),transparent 24%),linear-gradient(to bottom,transparent 65%,rgba(5,7,10,.24))}
+
+body.list-mode #ambientImage{opacity:.12;filter:blur(50px) saturate(112%)}
+body.list-mode .coverflow{padding:10px 18px 34px}
+.albumListGrid{gap:28px 18px}
+.albumListCover{
+  border-radius:8px;
+  background:linear-gradient(135deg,rgba(88,224,210,.14),rgba(255,92,122,.12));
+  box-shadow:0 18px 46px rgba(0,0,0,.32),0 0 0 1px rgba(255,255,255,.10);
+}
+.albumListCover::after{content:"";position:absolute;inset:0;background:linear-gradient(145deg,rgba(255,255,255,.18),transparent 30%);pointer-events:none;opacity:.82}
+.albumListCard:hover .albumListCover{transform:translateY(-3px);box-shadow:0 24px 64px rgba(0,0,0,.42),0 0 0 1px rgba(88,224,210,.24)}
+.albumListCard.active .albumListCover{box-shadow:0 24px 70px rgba(0,0,0,.46),0 0 0 2px rgba(88,224,210,.92),0 0 0 5px rgba(88,224,210,.13)}
+.albumListTitle{height:auto;margin-top:10px;font-size:14px;line-height:1.22;font-weight:850}
+.albumListArtist{color:var(--sub)}
+.albumListMeta{color:var(--muted)}
+
+.listItem{
+  border-color:rgba(255,255,255,.12);
+  border-radius:10px;
+  background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.04));
+}
+.listItem img{border-radius:8px}
+.listTitle{font-weight:850}
+.listSub{color:var(--muted)}
+
+@media (max-width:900px){
+  .brand h1{font-size:34px}
+  .albumTitle{font-size:38px}
+  .albumArtist{font-size:17px}
+  .menuBox{border-radius:18px}
+  .albumCard img{border-radius:14px}
+  .menuActions{grid-template-columns:1fr 1fr}
+}
+@media (max-width:560px){
+  .brand h1{font-size:30px}
+  .albumTitle{font-size:34px}
+  .albumArtist{font-size:16px}
+  .menuActions{grid-template-columns:1fr}
+  .mainBtn,.smallBtn{width:100%}
+  .albumCard,.albumCard img{border-radius:12px}
+  .albumListCover{border-radius:8px}
+}
 
 </style>
 </head>
