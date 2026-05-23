@@ -1,13 +1,13 @@
-const CACHE_NAME = 'coldishwave-shell-v1';
+const CACHE_NAME = 'coldishwave-shell-v2';
 const SHELL_ASSETS = [
-  '/',
-  '/index.html',
-  '/albums.json',
-  '/manifest.webmanifest',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png',
-  '/icons/icon-maskable-512.png',
-  '/icons/apple-touch-icon.png'
+  './',
+  './index.html',
+  './albums.json',
+  './manifest.webmanifest',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icons/icon-maskable-512.png',
+  './icons/apple-touch-icon.png'
 ];
 
 self.addEventListener('install', event => {
