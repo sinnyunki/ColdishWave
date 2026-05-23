@@ -3,15 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#0A84FF" />
-<meta name="mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-title" content="ColdishWave" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<link rel="manifest" href="manifest.webmanifest" />
-<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
-<title>ColdishWave</title>
+<meta name="theme-color" content="#000000" />
+<title>CodishWave</title>
 <style>
 :root{
   --bg:#050505;
@@ -125,9 +118,9 @@ body.list-mode .modeIcon i:nth-child(4){display:none}
 body.list-mode #ambientImage{opacity:.08;filter:blur(48px) saturate(100%)}
 body.list-mode #ambientShade{display:none}
 body.list-mode .stage{display:block;overflow:visible;perspective:none;padding:42px 0 0}
-body.list-mode .coverflow{display:block;height:100%;overflow-x:hidden;overflow-y:auto;padding:8px 14px 30px;transform-style:flat;touch-action:pan-y;scroll-snap-type:none;scrollbar-width:thin;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch}
+body.list-mode .coverflow{display:block;height:100%;overflow-x:hidden;overflow-y:auto;padding:8px 10px 30px;transform-style:flat;touch-action:pan-y;scroll-snap-type:none;scrollbar-width:thin;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch}
 body.list-mode .counter,body.list-mode .genreHud{display:none}
-.albumListGrid{width:100%;margin:0 auto;padding:0 0 52px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:30px 16px;align-content:start;align-items:start}
+.albumListGrid{width:min(1160px,100%);margin:0 auto;padding:0 0 52px;display:grid;grid-template-columns:repeat(auto-fit,minmax(172px,1fr));gap:30px 20px;align-content:start;align-items:start}
 .albumListCard{min-width:0;border:0;background:transparent;color:#fff;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;display:block}
 .albumListCover{position:relative;aspect-ratio:1/1;border-radius:6px;overflow:hidden;background:rgba(255,255,255,.10);box-shadow:0 16px 46px rgba(0,0,0,.30),0 0 0 1px rgba(255,255,255,.10);transition:transform .18s ease,box-shadow .18s ease}
 .albumListCover img{width:100%;height:100%;display:block;object-fit:cover}
@@ -374,7 +367,6 @@ coverflow.addEventListener('pointermove',e=>{if(!dragging||isListMode()||isMobil
 coverflow.addEventListener('pointerup',e=>{if(isListMode()||isMobileView()){dragging=false;return;}if(!dragging)return;const diffX=lastX-startX,diffY=lastY-startY,moved=Math.hypot(diffX,diffY),duration=performance.now()-startTime;dragging=false;if(Math.abs(diffX)>SWIPE_MIN&&Math.abs(diffX)>Math.abs(diffY)){suppressCardClick=true;const steps=swipeSteps(diffX,duration);jumpAlbumMove((diffX<0?1:-1)*steps);setTimeout(()=>{suppressCardClick=false;},300);}else if(tapCardIndex!==null&&moved<14){e.preventDefault();suppressCardClick=true;openAlbumAt(tapCardIndex,true);setTimeout(()=>{suppressCardClick=false;},500);}tapCardIndex=null;});
 coverflow.addEventListener('pointercancel',()=>{dragging=false;suppressCardClick=false;tapCardIndex=null;});
 window.addEventListener('resize',()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(schedulePositionCards);});
-if('serviceWorker'in navigator&&location.protocol!=='file:')window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});
 async function init(){await load();buildGenres();applyFilters();}
 init();
 </script>
