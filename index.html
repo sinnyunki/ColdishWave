@@ -27,13 +27,12 @@
   --radius:24px;
   --safe-top:env(safe-area-inset-top,0px);
   --safe-right:env(safe-area-inset-right,0px);
-	  --safe-bottom:env(safe-area-inset-bottom,0px);
-	  --safe-left:env(safe-area-inset-left,0px);
-	  --library-top-space:132px;
-	  --cover-size:min(70vw,calc(100vh - 96px),920px);
-	  --cover-size:min(70vw,calc(100dvh - 96px),920px);
-	  --flow-ease:cubic-bezier(.19,.78,.22,1);
-	}
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --safe-left:env(safe-area-inset-left,0px);
+  --cover-size:min(70vw,calc(100vh - 96px),920px);
+  --cover-size:min(70vw,calc(100dvh - 96px),920px);
+  --flow-ease:cubic-bezier(.19,.78,.22,1);
+}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;min-height:100%;background:#000;color:var(--text);font-family:"Noto Sans CJK KR","Noto Sans KR","Source Han Sans KR","본고딕","Apple SD Gothic Neo",sans-serif;overflow:hidden}
 button,input,select,textarea{font:inherit}
@@ -99,39 +98,19 @@ body.fullscreen-active{--cover-size:min(78vw,calc(100vh - 58px),960px);--cover-s
 @media (max-width:560px){:root{--cover-size:min(90vw,calc(100vh - 92px),460px);--cover-size:min(90vw,calc(100dvh - 92px),460px)}.brand h1{font-size:32px}.topActions{gap:6px}.pill{height:38px;padding:0 12px;font-size:13px}.stage{height:100vh;height:100dvh}.albumCard{border-radius:18px}.albumTitle{font-size:clamp(30px,9vw,44px)}.mainBtn{height:44px;padding:0 14px}.row{grid-template-columns:1fr}.adminBox{border-radius:20px;padding:16px}.listItem{grid-template-columns:50px 1fr}.listItem img{width:50px;height:50px}.listControls{grid-column:1/-1;justify-content:flex-start}.navBtn{width:42px;height:42px;font-size:22px}}
 
 
-	/* Minimal cover-flow only layout */
-	.compactTopbar{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:9px;padding:calc(12px + var(--safe-top)) calc(18px + var(--safe-right)) 12px calc(18px + var(--safe-left));pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.88),rgba(0,0,0,.66) 70%,transparent);backdrop-filter:blur(16px)}
-	.libraryTopRow,.libraryShelfRow{display:flex;align-items:center;justify-content:space-between;gap:12px;pointer-events:auto}
-	.libraryIdentity{display:flex;align-items:center;min-width:0;gap:9px;text-shadow:0 12px 30px rgba(0,0,0,.72)}
-	.libraryAvatar{position:relative;width:31px;height:31px;border-radius:50%;display:grid;place-items:center;flex:0 0 auto;overflow:hidden;background:linear-gradient(135deg,#ff955f 0%,#fa2d48 50%,#7adbbd 100%);color:#fff;font-size:13px;font-weight:950;box-shadow:0 8px 24px rgba(0,0,0,.42),0 0 0 2px rgba(255,255,255,.12)}
-	.libraryAvatar::after{content:"";position:absolute;left:7px;right:7px;bottom:5px;height:10px;border-radius:999px;background:rgba(0,0,0,.34)}
-	.libraryAvatar span{position:relative;z-index:1}
-	.libraryTitle{min-width:0;font-size:22px;line-height:1;font-weight:920;letter-spacing:-.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-	.libraryActions{display:flex;align-items:center;gap:9px;flex:0 0 auto}
-	.libraryIconBtn{width:34px;height:34px;border:0;border-radius:50%;background:transparent;color:#fff;display:grid;place-items:center;padding:0;pointer-events:auto;transition:background .18s ease,transform .18s ease}
-	.libraryIconBtn:hover,.libraryIconBtn:focus-visible{background:rgba(255,255,255,.12);transform:translateY(-1px);outline:0}
-	.libraryIconBtn svg{width:22px;height:22px;display:block;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-	.libraryChipRow{display:flex;align-items:center;gap:7px;max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 2px;scrollbar-width:none;pointer-events:auto;-webkit-overflow-scrolling:touch}
-	.libraryChipRow::-webkit-scrollbar{display:none}
-	.libraryChip{height:31px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;padding:0 14px;border:0;border-radius:999px;background:rgba(255,255,255,.10);color:#fff;font-size:12px;font-weight:850;white-space:nowrap;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);transition:background .18s ease,color .18s ease,transform .18s ease}
-	.libraryChip:hover,.libraryChip:focus-visible{background:rgba(255,255,255,.18);outline:0}
-	.libraryChip.active{background:#fff;color:#000}
-	.libraryShelfRow{min-height:27px}
-	.librarySortBtn{height:27px;min-width:0;border:0;background:transparent;color:rgba(255,255,255,.78);display:inline-flex;align-items:center;gap:6px;padding:0;font-size:12px;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:auto}
-	.librarySortBtn:hover,.librarySortBtn:focus-visible{color:#fff;outline:0}
-	.librarySortBtn svg{width:15px;height:15px;flex:0 0 auto;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-	.librarySortBtn span{min-width:0;overflow:hidden;text-overflow:ellipsis}
-	.viewToggleBtn{position:static;z-index:60;width:31px;height:31px;border:0;border-radius:50%;background:transparent;color:#fff;backdrop-filter:none;display:grid;place-items:center;box-shadow:none;pointer-events:auto;transition:transform .2s ease,background .2s ease}
-	.viewToggleBtn:hover,.viewToggleBtn:focus-visible{transform:translateY(-1px);background:rgba(255,255,255,.12);outline:0}
-	.modeIcon{position:relative;width:22px;height:22px;display:grid;grid-template-columns:repeat(2,8px);grid-template-rows:repeat(2,8px);gap:6px;place-content:center}
-	.modeIcon i{display:block;width:8px;height:8px;border-radius:2px;background:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.08);transition:all .22s var(--flow-ease)}
+/* Minimal cover-flow only layout */
+.compactTopbar{justify-content:flex-end;align-items:flex-start;padding:calc(18px + var(--safe-top)) calc(22px + var(--safe-right)) 0 calc(22px + var(--safe-left));pointer-events:none}
+.viewToggleBtn{position:fixed;left:calc(22px + var(--safe-left));top:calc(18px + var(--safe-top));z-index:60;width:50px;height:50px;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:rgba(0,0,0,.34);backdrop-filter:blur(16px);display:grid;place-items:center;box-shadow:0 16px 48px rgba(0,0,0,.35);pointer-events:auto;transition:transform .2s ease,background .2s ease}
+.viewToggleBtn:hover{transform:translateY(-2px);background:rgba(255,255,255,.12)}
+.modeIcon{position:relative;width:22px;height:22px;display:grid;grid-template-columns:repeat(2,8px);grid-template-rows:repeat(2,8px);gap:6px;place-content:center}
+.modeIcon i{display:block;width:8px;height:8px;border-radius:2px;background:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.08);transition:all .22s var(--flow-ease)}
 body.list-mode .modeIcon{display:block}
 body.list-mode .modeIcon i{position:absolute;left:5px;top:3px;width:12px;height:16px;border-radius:3px;background:rgba(255,255,255,.26);box-shadow:0 0 0 1.5px rgba(255,255,255,.88),0 8px 18px rgba(0,0,0,.26)}
 body.list-mode .modeIcon i:nth-child(1){transform:translateX(-7px) rotate(-13deg);opacity:.76}
 body.list-mode .modeIcon i:nth-child(2){transform:translateX(0) rotate(0deg);background:#fff;opacity:1}
 body.list-mode .modeIcon i:nth-child(3){transform:translateX(7px) rotate(13deg);opacity:.76}
 body.list-mode .modeIcon i:nth-child(4){display:none}
-	.hamburgerBtn{position:relative;z-index:60;width:50px;height:50px;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:rgba(0,0,0,.34);backdrop-filter:blur(16px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;box-shadow:0 16px 48px rgba(0,0,0,.35);pointer-events:auto;transition:transform .2s ease,background .2s ease}
+.hamburgerBtn{position:relative;z-index:60;width:50px;height:50px;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:rgba(0,0,0,.34);backdrop-filter:blur(16px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;box-shadow:0 16px 48px rgba(0,0,0,.35);pointer-events:auto;transition:transform .2s ease,background .2s ease}
 .hamburgerBtn:hover{transform:translateY(-2px);background:rgba(255,255,255,.12)}
 .hamburgerBtn span{width:20px;height:2px;border-radius:999px;background:#fff;display:block}
 .menuPanel{position:fixed;inset:0;z-index:90;display:none;pointer-events:none}.menuPanel.show{display:block;pointer-events:auto}.menuDim{position:absolute;inset:0;background:rgba(0,0,0,.40);backdrop-filter:blur(4px)}
@@ -144,14 +123,14 @@ body.list-mode .modeIcon i:nth-child(4){display:none}
 .menuPanel .searchbar{position:static;top:auto;left:auto;transform:none!important;z-index:auto;width:100%;display:grid;grid-template-columns:1fr;gap:8px;opacity:1;pointer-events:auto;margin:0}.menuPanel .searchbar input,.menuPanel .searchbar select{width:100%;height:43px;background:rgba(255,255,255,.075)}.menuPanel .searchbar select{appearance:none;-webkit-appearance:none;padding-right:42px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 6.25 8 9.75l3.5-3.5' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-size:16px 16px}.menuPanel .searchbar select::-ms-expand{display:none}
 .menuHeader>div,.menuCurrent,.menuHint{display:none!important}
 .menuHint{margin-top:14px;color:var(--muted);font-size:12px;line-height:1.55}.infoDock,.navBtn{display:none!important}.stage{padding-top:0}
-	@media (max-width:900px){html,body{overflow:hidden}.compactTopbar{position:fixed;padding:calc(10px + var(--safe-top)) calc(14px + var(--safe-right)) 12px calc(14px + var(--safe-left))}.stage{position:absolute;inset:0;height:100vh;height:100dvh;padding-top:0}}
-	@media (max-width:560px){.libraryTitle{font-size:20px}.libraryAvatar{width:29px;height:29px}.libraryIconBtn{width:32px;height:32px}.libraryChip{height:30px;padding:0 13px;font-size:11px}.menuBox{top:calc(10px + var(--safe-top));right:calc(10px + var(--safe-right));width:calc(100% - 20px - var(--safe-left) - var(--safe-right));border-radius:22px;padding:16px}.menuActions{grid-template-columns:1fr}.albumCard{border-radius:18px}}
-	@media (max-width:900px){:root{--mobile-cover-size:min(86vw,calc(100vh - 230px - var(--safe-top) - var(--safe-bottom)),560px);--mobile-cover-size:min(86vw,calc(100dvh - 230px - var(--safe-top) - var(--safe-bottom)),560px)}.stage{display:block;overflow:hidden;perspective:none}.coverflow{display:block;height:100%;overflow-x:hidden;overflow-y:auto;padding:0;transform-style:flat;touch-action:pan-y;scroll-snap-type:y mandatory;scrollbar-width:none;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch}.coverflow::-webkit-scrollbar{display:none}.albumCard{position:relative;left:auto;top:auto;width:100%;height:100%;min-height:100%;aspect-ratio:auto;display:flex;align-items:center;justify-content:center;padding:calc(var(--library-top-space) + 8px + var(--safe-top)) 0 calc(82px + var(--safe-bottom));transform:none!important;opacity:1!important;z-index:auto!important;pointer-events:auto!important;transition:none;will-change:auto;backface-visibility:visible;transform-style:flat;background:transparent;border:0;border-radius:0;box-shadow:none!important;scroll-snap-align:start;scroll-snap-stop:always}.albumCard.active{box-shadow:none!important}.albumCard img{width:var(--mobile-cover-size);height:var(--mobile-cover-size);border-radius:20px;box-shadow:0 26px 80px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.14)}.albumCard.active img{box-shadow:0 34px 96px rgba(0,0,0,.66),0 0 0 1px rgba(255,255,255,.22)}.albumCard.hidden{pointer-events:auto}.albumCard::before,.albumCard::after{display:none}}
-	@media (max-width:560px){:root{--library-top-space:124px;--mobile-cover-size:min(88vw,calc(100vh - 214px - var(--safe-top) - var(--safe-bottom)),460px);--mobile-cover-size:min(88vw,calc(100dvh - 214px - var(--safe-top) - var(--safe-bottom)),460px)}.albumCard{padding:calc(var(--library-top-space) + 8px + var(--safe-top)) 0 calc(80px + var(--safe-bottom))}.albumCard img{border-radius:18px}.viewToggleBtn{width:31px;height:31px}}
+@media (max-width:900px){html,body{overflow:hidden}.compactTopbar{position:fixed;padding:calc(14px + var(--safe-top)) calc(14px + var(--safe-right)) 0 calc(14px + var(--safe-left))}.viewToggleBtn{left:calc(14px + var(--safe-left));top:calc(14px + var(--safe-top))}.stage{position:absolute;inset:0;height:100vh;height:100dvh;padding-top:0}}
+@media (max-width:560px){.hamburgerBtn{width:46px;height:46px}.menuBox{top:calc(10px + var(--safe-top));right:calc(10px + var(--safe-right));width:calc(100% - 20px - var(--safe-left) - var(--safe-right));border-radius:22px;padding:16px}.menuActions{grid-template-columns:1fr}.albumCard{border-radius:18px}}
+@media (max-width:900px){:root{--mobile-cover-size:min(86vw,calc(100vh - 176px - var(--safe-top) - var(--safe-bottom)),560px);--mobile-cover-size:min(86vw,calc(100dvh - 176px - var(--safe-top) - var(--safe-bottom)),560px)}.stage{display:block;overflow:hidden;perspective:none}.coverflow{display:block;height:100%;overflow-x:hidden;overflow-y:auto;padding:0;transform-style:flat;touch-action:pan-y;scroll-snap-type:y mandatory;scrollbar-width:none;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch}.coverflow::-webkit-scrollbar{display:none}.albumCard{position:relative;left:auto;top:auto;width:100%;height:100%;min-height:100%;aspect-ratio:auto;display:flex;align-items:center;justify-content:center;padding:calc(72px + var(--safe-top)) 0 calc(88px + var(--safe-bottom));transform:none!important;opacity:1!important;z-index:auto!important;pointer-events:auto!important;transition:none;will-change:auto;backface-visibility:visible;transform-style:flat;background:transparent;border:0;border-radius:0;box-shadow:none!important;scroll-snap-align:start;scroll-snap-stop:always}.albumCard.active{box-shadow:none!important}.albumCard img{width:var(--mobile-cover-size);height:var(--mobile-cover-size);border-radius:20px;box-shadow:0 26px 80px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.14)}.albumCard.active img{box-shadow:0 34px 96px rgba(0,0,0,.66),0 0 0 1px rgba(255,255,255,.22)}.albumCard.hidden{pointer-events:auto}.albumCard::before,.albumCard::after{display:none}}
+@media (max-width:560px){:root{--mobile-cover-size:min(88vw,calc(100vh - 164px - var(--safe-top) - var(--safe-bottom)),460px);--mobile-cover-size:min(88vw,calc(100dvh - 164px - var(--safe-top) - var(--safe-bottom)),460px)}.albumCard{padding:calc(68px + var(--safe-top)) 0 calc(84px + var(--safe-bottom))}.albumCard img{border-radius:18px}.viewToggleBtn{width:46px;height:46px}}
 
 body.list-mode #ambientImage{opacity:.08;filter:blur(48px) saturate(100%)}
 body.list-mode #ambientShade{display:none}
-	body.list-mode .stage{display:block;overflow:visible;perspective:none;padding:calc(var(--library-top-space) + var(--safe-top)) 0 0}
+body.list-mode .stage{display:block;overflow:visible;perspective:none;padding:42px 0 0}
 body.list-mode .coverflow{display:block;height:100%;overflow-x:hidden;overflow-y:auto;padding:8px 14px 30px;transform-style:flat;touch-action:pan-y;scroll-snap-type:none;scrollbar-width:thin;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch}
 body.list-mode .counter,body.list-mode .genreHud{display:none}
 .albumListGrid{width:100%;margin:0 auto;padding:0 0 52px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:30px 16px;align-content:start;align-items:start}
@@ -165,42 +144,24 @@ body.list-mode .counter,body.list-mode .genreHud{display:none}
 .albumListMeta{margin-top:4px;color:var(--muted);font-size:11px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .listActionPanel{position:fixed;inset:0;z-index:115;display:none;pointer-events:none}.listActionPanel.show{display:block;pointer-events:auto}.listActionDim{position:absolute;inset:0;background:rgba(0,0,0,.48);backdrop-filter:blur(6px)}.listActionSheet{position:absolute;left:50%;bottom:calc(14px + var(--safe-bottom));transform:translateX(-50%);width:min(390px,calc(100% - 24px - var(--safe-left) - var(--safe-right)));border:1px solid rgba(255,255,255,.16);border-radius:22px;background:linear-gradient(180deg,rgba(28,28,28,.97),rgba(12,12,12,.96));box-shadow:0 28px 90px rgba(0,0,0,.62);padding:14px;animation:sheetIn .18s ease both}.listActionMeta{display:grid;grid-template-columns:58px 1fr;gap:11px;align-items:center;margin-bottom:12px;padding:4px}.listActionMeta img{width:58px;height:58px;border-radius:9px;object-fit:cover;background:#222}.listActionTitle{display:block;font-size:15px;line-height:1.25;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.listActionArtist{display:block;margin-top:5px;color:var(--sub);font-size:13px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.listActionButtons{display:grid;gap:8px}.listActionButtons button{height:46px;border:1px solid rgba(255,255,255,.13);border-radius:14px;background:rgba(255,255,255,.08);color:#fff;font-size:15px;font-weight:900}.listActionButtons button.danger{color:#ffb5b5;background:rgba(255,90,90,.13);border-color:rgba(255,90,90,.35)}
 @keyframes sheetIn{from{opacity:0;transform:translateX(-50%) translateY(10px) scale(.98)}to{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}}
-	@media (max-width:900px){body.list-mode .stage{position:absolute;inset:0;height:100vh;height:100dvh;padding:calc(var(--library-top-space) + var(--safe-top)) 0 0}.albumListGrid{grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:24px 14px;padding-bottom:calc(42px + var(--safe-bottom))}.albumListTitle{height:16px;font-size:13px;line-height:16px}.albumListArtist{font-size:12px}.albumListMeta{font-size:10px}}
-	@media (max-width:560px){body.list-mode .stage{padding-top:calc(var(--library-top-space) + var(--safe-top))}.albumListGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 12px;padding-left:calc(10px + var(--safe-left));padding-right:calc(10px + var(--safe-right))}.albumListCover{border-radius:5px}}
+@media (max-width:900px){body.list-mode .stage{position:absolute;inset:0;height:100vh;height:100dvh;padding:calc(56px + var(--safe-top)) 0 0}.albumListGrid{grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:24px 14px;padding-bottom:calc(42px + var(--safe-bottom))}.albumListTitle{height:16px;font-size:13px;line-height:16px}.albumListArtist{font-size:12px}.albumListMeta{font-size:10px}}
+@media (max-width:560px){body.list-mode .stage{padding-top:calc(54px + var(--safe-top))}.albumListGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 12px;padding-left:calc(10px + var(--safe-left));padding-right:calc(10px + var(--safe-right))}.albumListCover{border-radius:5px}}
 
 </style>
 </head>
 <body>
 <div id="ambient"><div id="ambientImage"></div><div id="ambientShade"></div></div>
 <div id="app">
-	  <div class="counter" id="counter">00 / 00</div>
-	  <div class="genreHud" id="genreHud">장르 미지정</div>
-	  <header class="topbar compactTopbar">
-	    <div class="libraryTopRow">
-	      <div class="libraryIdentity">
-	        <div class="libraryAvatar" aria-hidden="true"><span>C</span></div>
-	        <div class="libraryTitle">Your Library</div>
-	      </div>
-	      <div class="libraryActions">
-	        <button class="libraryIconBtn" onclick="openLibrarySearch()" aria-label="검색 열기" title="검색">
-	          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
-	        </button>
-	        <button class="libraryIconBtn" onclick="openAdmin(); closeMenu();" aria-label="앨범 추가" title="앨범 추가">
-	          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
-	        </button>
-	      </div>
-	    </div>
-	    <div class="libraryChipRow" id="quickFilterStrip" aria-label="라이브러리 필터"></div>
-	    <div class="libraryShelfRow">
-	      <button class="librarySortBtn" onclick="cycleSortMode()" aria-label="정렬 변경" title="정렬 변경">
-	        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h12"></path><path d="m13 4 3 3-3 3"></path><path d="M20 17H8"></path><path d="m11 14-3 3 3 3"></path></svg>
-	        <span id="libraryShelfLabel">Albums</span>
-	      </button>
-	      <button class="viewToggleBtn" id="viewToggleBtn" onclick="toggleViewMode()" aria-label="리스트 보기" title="리스트 보기">
-	        <span class="modeIcon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-	      </button>
-	    </div>
-	  </header>
+  <div class="counter" id="counter">00 / 00</div>
+  <div class="genreHud" id="genreHud">장르 미지정</div>
+  <header class="topbar compactTopbar">
+    <button class="viewToggleBtn" id="viewToggleBtn" onclick="toggleViewMode()" aria-label="리스트 보기" title="리스트 보기">
+      <span class="modeIcon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    </button>
+    <button class="hamburgerBtn" id="hamburgerBtn" onclick="toggleMenu()" aria-label="메뉴 열기">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
 
   <aside class="menuPanel" id="menuPanel" aria-hidden="true">
 	    <div class="menuDim" onclick="closeMenu()"></div>
@@ -293,17 +254,16 @@ const PLAYBACK_MODE_KEY='APPLE_MUSIC_COVERFLOW_PLAYBACK_MODE_V1';
 const VIEW_MODE_KEY='APPLE_MUSIC_COVERFLOW_VIEW_MODE_V1';
 const RECENT_KEY='APPLE_MUSIC_COVERFLOW_RECENT_V1';
 const SHORTCUT_NAME='Play Apple Music URL';
-	const RECENT_LIMIT=36;
-	const NAV_INTERVAL=180;
-	const WHEEL_MIN=18;
-	const WHEEL_STEP=90;
+const RECENT_LIMIT=36;
+const NAV_INTERVAL=180;
+const WHEEL_MIN=18;
+const WHEEL_STEP=90;
 const SWIPE_MIN=42;
 const SWIPE_STEP=92;
-	const MAX_BURST_STEPS=7;
-	const VISIBLE_RADIUS=4;
-	const RETURN_DELAY=10000;
-	const BASE_FILTERS=[{label:'Albums',value:'All'},{label:'Favorites',value:'Favorites'},{label:'Recent',value:'Recent'}];
-	let library=[];let filtered=[];let index=0;let searchQuery='';let genreFilter='All';let sortMode='random';let editingIndex=null;let dragging=false;let startX=0;let startY=0;let lastX=0;let lastY=0;let startTime=0;let tapCardIndex=null;let suppressCardClick=false;let navLocked=false;let queuedDirection=0;let wheelDelta=0;let wheelResetTimer=null;let resizeFrame=null;let positionFrame=null;let mobileScrollFrame=null;let returnTimer=null;let returnAnchorId='';let autoReturning=false;let lastAmbientCover='';let preloadTimer=null;let listActionFilteredIndex=null;let listLongPressTimer=null;let listLongPressStarted=false;let listLongPressPoint=null;
+const MAX_BURST_STEPS=7;
+const VISIBLE_RADIUS=4;
+const RETURN_DELAY=10000;
+let library=[];let filtered=[];let index=0;let searchQuery='';let genreFilter='All';let sortMode='random';let editingIndex=null;let dragging=false;let startX=0;let startY=0;let lastX=0;let lastY=0;let startTime=0;let tapCardIndex=null;let suppressCardClick=false;let navLocked=false;let queuedDirection=0;let wheelDelta=0;let wheelResetTimer=null;let resizeFrame=null;let positionFrame=null;let mobileScrollFrame=null;let returnTimer=null;let returnAnchorId='';let autoReturning=false;let lastAmbientCover='';let preloadTimer=null;let listActionFilteredIndex=null;let listLongPressTimer=null;let listLongPressStarted=false;let listLongPressPoint=null;
 const $=id=>document.getElementById(id);
 const coverflow=$('coverflow'),adminPanel=$('adminPanel'),adminList=$('adminList'),ambientImage=$('ambientImage');
 const albumTitle=$('albumTitle'),albumArtist=$('albumArtist'),albumMeta=$('albumMeta'),appleLink=$('appleLink'),counter=$('counter'),genreHud=$('genreHud'),menuCounter=$('menuCounter'),favoriteBtn=$('favoriteBtn'),playbackModeBtn=$('playbackModeBtn');
@@ -360,13 +320,9 @@ function shortcutRunUrl(url){return `shortcuts://run-shortcut?name=${encodeURICo
 function playbackTargetUrl(url){return playbackMode==='shortcut'?shortcutRunUrl(url):appleAppUrl(url,true);}
 function directPlaybackTargetUrl(url){return appleAppUrl(url,true);}
 function openAppleMusic(url,direct=false){const target=direct?directPlaybackTargetUrl(url):playbackTargetUrl(url);if(!target)return;location.assign(target);}
-	function getGenreValues(){return[...new Set(library.map(a=>String(a.genre||'').trim()).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b)));}
-	function filterLabel(v=genreFilter){if(v==='All')return'Albums';if(v==='Favorites')return'Favorites';if(v==='Recent')return'Recent';return v||'Albums';}
-	function sortModeLabel(){return{custom:'Added',artist:'Artist',title:'Title','year-desc':'Newest',year:'Oldest',random:'Random'}[sortMode]||'Random';}
-	function buildQuickFilters(){const strip=$('quickFilterStrip');if(!strip)return;strip.innerHTML='';const items=[...BASE_FILTERS,...getGenreValues().map(g=>({label:g,value:g}))];items.forEach(item=>{const btn=document.createElement('button');btn.type='button';btn.className='libraryChip';btn.textContent=item.label;btn.dataset.value=item.value;btn.setAttribute('aria-pressed','false');btn.addEventListener('click',()=>setGenre(item.value));strip.appendChild(btn);});syncLibraryTopbar();}
-	function syncLibraryTopbar(){const strip=$('quickFilterStrip');if(strip){strip.querySelectorAll('.libraryChip').forEach(btn=>{const active=btn.dataset.value===genreFilter;btn.classList.toggle('active',active);btn.setAttribute('aria-pressed',active?'true':'false');});}const label=$('libraryShelfLabel');if(label)label.textContent=`${filterLabel()} · ${sortModeLabel()}`;}
-	function buildGenres(){const sel=$('genreSelect');const old=sel.value;const genres=getGenreValues();sel.innerHTML='<option value="All">All Genres</option><option value="Favorites">Favorites</option><option value="Recent">최근 열어봄</option>'+genres.map(g=>`<option value="${esc(g)}">${esc(g)}</option>`).join('');sel.value=[...genres,'All','Favorites','Recent'].includes(old)?old:'All';const preset=$('genrePresetSelect');if(preset){const oldPreset=preset.value;preset.innerHTML='<option value="">기존 장르 선택</option>'+genres.map(g=>`<option value="${esc(g)}">${esc(g)}</option>`).join('');preset.value=genres.includes(oldPreset)?oldPreset:'';syncAdminGenrePreset();}buildQuickFilters();}
-	function applyFilters(){let list=[...library];if(searchQuery){const q=searchQuery.toLowerCase();list=list.filter(a=>String(a.title).toLowerCase().includes(q)||String(a.artist).toLowerCase().includes(q));}if(genreFilter==='Favorites')list=list.filter(a=>favorites.includes(uid(a)));else if(genreFilter==='Recent')list=list.filter(a=>recentAlbumIds.includes(uid(a)));else if(genreFilter!=='All')list=list.filter(a=>a.genre===genreFilter);if(genreFilter==='Recent')list.sort((a,b)=>recentRank(a)-recentRank(b));else if(sortMode==='artist')list.sort((a,b)=>String(a.artist).localeCompare(String(b.artist))||String(a.title).localeCompare(String(b.title)));else if(sortMode==='title')list.sort((a,b)=>String(a.title).localeCompare(String(b.title)));else if(sortMode==='year')list.sort((a,b)=>(Number(a.year)||0)-(Number(b.year)||0));else if(sortMode==='year-desc')list.sort((a,b)=>(Number(b.year)||0)-(Number(a.year)||0));else if(sortMode==='random')list=shuffle(list);filtered=list;index=Math.min(index,Math.max(0,filtered.length-1));render();syncLibraryTopbar();}
+function getGenreValues(){return[...new Set(library.map(a=>String(a.genre||'').trim()).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b)));}
+function buildGenres(){const sel=$('genreSelect');const old=sel.value;const genres=getGenreValues();sel.innerHTML='<option value="All">All Genres</option><option value="Favorites">Favorites</option><option value="Recent">최근 열어봄</option>'+genres.map(g=>`<option value="${esc(g)}">${esc(g)}</option>`).join('');sel.value=[...genres,'All','Favorites','Recent'].includes(old)?old:'All';const preset=$('genrePresetSelect');if(preset){const oldPreset=preset.value;preset.innerHTML='<option value="">기존 장르 선택</option>'+genres.map(g=>`<option value="${esc(g)}">${esc(g)}</option>`).join('');preset.value=genres.includes(oldPreset)?oldPreset:'';syncAdminGenrePreset();}}
+function applyFilters(){let list=[...library];if(searchQuery){const q=searchQuery.toLowerCase();list=list.filter(a=>String(a.title).toLowerCase().includes(q)||String(a.artist).toLowerCase().includes(q));}if(genreFilter==='Favorites')list=list.filter(a=>favorites.includes(uid(a)));else if(genreFilter==='Recent')list=list.filter(a=>recentAlbumIds.includes(uid(a)));else if(genreFilter!=='All')list=list.filter(a=>a.genre===genreFilter);if(genreFilter==='Recent')list.sort((a,b)=>recentRank(a)-recentRank(b));else if(sortMode==='artist')list.sort((a,b)=>String(a.artist).localeCompare(String(b.artist))||String(a.title).localeCompare(String(b.title)));else if(sortMode==='title')list.sort((a,b)=>String(a.title).localeCompare(String(b.title)));else if(sortMode==='year')list.sort((a,b)=>(Number(a.year)||0)-(Number(b.year)||0));else if(sortMode==='year-desc')list.sort((a,b)=>(Number(b.year)||0)-(Number(a.year)||0));else if(sortMode==='random')list=shuffle(list);filtered=list;index=Math.min(index,Math.max(0,filtered.length-1));render();}
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a;}
 function isMobileView(){return window.innerWidth<900;}
 function isListMode(){return viewMode==='list';}
@@ -419,8 +375,7 @@ function flushQueuedMove(){navLocked=false;if(!queuedDirection)return;const dir=
 function queueAlbumMove(dir){if(!filtered.length)return;ensureReturnAnchor();if(navLocked){queuedDirection=dir;return;}setAlbumIndex(index+dir);navLocked=true;setTimeout(flushQueuedMove,NAV_INTERVAL);}
 function prevAlbum(){queueAlbumMove(-1);}
 function nextAlbum(){queueAlbumMove(1);}
-	function setSearch(v){searchQuery=v;index=0;applyFilters();}function setGenre(v){genreFilter=v;const sel=$('genreSelect');if(sel&&sel.value!==v)sel.value=v;index=0;applyFilters();}function setSort(v){sortMode=v;const sel=$('sortSelect');if(sel&&sel.value!==v)sel.value=v;index=0;applyFilters();}
-	function cycleSortMode(){const modes=['random','custom','artist','year-desc','year','title'];const next=modes[(Math.max(0,modes.indexOf(sortMode))+1)%modes.length];setSort(next);}
+function setSearch(v){searchQuery=v;index=0;applyFilters();}function setGenre(v){genreFilter=v;index=0;applyFilters();}function setSort(v){sortMode=v;const sel=$('sortSelect');if(sel&&sel.value!==v)sel.value=v;index=0;applyFilters();}
 function selectAdminGenre(v){if(!v)return;$('inputGenre').value=v;}
 function syncAdminGenrePreset(){const preset=$('genrePresetSelect');if(!preset)return;const value=$('inputGenre')?.value.trim()||'';const exists=[...preset.options].some(option=>option.value===value);preset.value=exists?value:'';}
 function libraryIndexForAlbum(a){return library.findIndex(item=>item===a||uid(item)===uid(a));}
@@ -456,11 +411,9 @@ function exportPublishData(){const data={updatedAt:new Date().toISOString(),albu
 function importData(){const input=document.createElement('input');input.type='file';input.accept='application/json,.js';input.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=async()=>{try{let txt=String(r.result);let data;if(txt.includes('const albums')){txt=txt.replace(/^[\s\S]*?const\s+albums\s*=\s*/,'').replace(/;\s*[\s\S]*$/,'');data=Function('return '+txt)();}else data=JSON.parse(txt);const albums=normalizeAlbums(data);if(!albums.length)throw new Error('invalid');library=albums;buildGenres();index=0;applyFilters();await persistLibrary('백업을 불러왔습니다.');}catch(err){toast('파일을 읽지 못했습니다. JSON 백업 또는 albums.js 형식을 확인하세요.');}};r.readAsText(f);};input.click();}
 function toggleFullscreen(){const el=document.documentElement;if(!document.fullscreenElement){(el.requestFullscreen||el.webkitRequestFullscreen||el.msRequestFullscreen)?.call(el);}else{(document.exitFullscreen||document.webkitExitFullscreen||document.msExitFullscreen)?.call(document);}}
 function onFullscreenChange(){const on=!!(document.fullscreenElement||document.webkitFullscreenElement||document.msFullscreenElement);document.body.classList.toggle('fullscreen-active',on);$('fullscreenBtn').textContent=on?'전체화면 해제':'전체화면';setTimeout(render,100);}document.addEventListener('fullscreenchange',onFullscreenChange);document.addEventListener('webkitfullscreenchange',onFullscreenChange);
-	function toggleControls(){toggleMenu();}
-	function openMenu(){const p=$('menuPanel');if(!p)return;p.classList.add('show');p.setAttribute('aria-hidden','false');}
-	function openLibrarySearch(){openMenu();setTimeout(()=>{$('searchInput')?.focus({preventScroll:true});},80);}
+function toggleControls(){toggleMenu();}
 
-	function toggleMenu(){const p=$('menuPanel');const open=p.classList.toggle('show');p.setAttribute('aria-hidden',open?'false':'true');}
+function toggleMenu(){const p=$('menuPanel');const open=p.classList.toggle('show');p.setAttribute('aria-hidden',open?'false':'true');}
 function closeMenu(){const p=$('menuPanel');if(!p)return;p.classList.remove('show');p.setAttribute('aria-hidden','true');}
 function toggleViewMode(){viewMode=isListMode()?'coverflow':'list';localStorage.setItem(VIEW_MODE_KEY,viewMode);render();toast(isListMode()?'리스트 모드':'커버플로우 모드');}
 function togglePlaybackMode(){playbackMode=playbackMode==='shortcut'?'direct':'shortcut';localStorage.setItem(PLAYBACK_MODE_KEY,playbackMode);setInfo(filtered[index]);toast(playbackMode==='shortcut'?'단축어 재생 모드입니다.':'직접 열기 모드입니다.');}
