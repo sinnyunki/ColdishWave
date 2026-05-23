@@ -175,7 +175,7 @@ body.list-mode .counter,body.list-mode .genreHud{display:none}
 	        <div class="searchbar menuSearchbar">
           <input id="searchInput" type="search" placeholder="앨범 / 아티스트 검색" oninput="setSearch(this.value)">
           <select id="genreSelect" onchange="setGenre(this.value)"><option value="All">All Genres</option><option value="Favorites">Favorites</option></select>
-          <select onchange="setSort(this.value)"><option value="custom">등록 순서</option><option value="artist">아티스트 이름순</option><option value="year-desc">최신 연도순</option><option value="year">오래된 연도순</option><option value="title">앨범 제목순</option><option value="random">랜덤</option></select>
+          <select onchange="setSort(this.value)"><option value="custom">등록 순서</option><option value="artist">아티스트 이름순</option><option value="year-desc">최신 연도순</option><option value="year">오래된 연도순</option><option value="title">앨범 제목순</option><option value="random" selected>랜덤</option></select>
 	        </div>
 	      </div>
 
@@ -239,7 +239,7 @@ const SWIPE_STEP=92;
 const MAX_BURST_STEPS=7;
 const VISIBLE_RADIUS=4;
 const RETURN_DELAY=10000;
-let library=[];let filtered=[];let index=0;let searchQuery='';let genreFilter='All';let sortMode='custom';let editingIndex=null;let dragging=false;let startX=0;let startY=0;let lastX=0;let lastY=0;let startTime=0;let tapCardIndex=null;let suppressCardClick=false;let navLocked=false;let queuedDirection=0;let wheelDelta=0;let wheelResetTimer=null;let resizeFrame=null;let positionFrame=null;let mobileScrollFrame=null;let returnTimer=null;let returnAnchorId='';let autoReturning=false;let lastAmbientCover='';let preloadTimer=null;
+let library=[];let filtered=[];let index=0;let searchQuery='';let genreFilter='All';let sortMode='random';let editingIndex=null;let dragging=false;let startX=0;let startY=0;let lastX=0;let lastY=0;let startTime=0;let tapCardIndex=null;let suppressCardClick=false;let navLocked=false;let queuedDirection=0;let wheelDelta=0;let wheelResetTimer=null;let resizeFrame=null;let positionFrame=null;let mobileScrollFrame=null;let returnTimer=null;let returnAnchorId='';let autoReturning=false;let lastAmbientCover='';let preloadTimer=null;
 const $=id=>document.getElementById(id);
 const coverflow=$('coverflow'),adminPanel=$('adminPanel'),adminList=$('adminList'),ambientImage=$('ambientImage');
 const albumTitle=$('albumTitle'),albumArtist=$('albumArtist'),albumMeta=$('albumMeta'),appleLink=$('appleLink'),counter=$('counter'),genreHud=$('genreHud'),menuCounter=$('menuCounter'),favoriteBtn=$('favoriteBtn'),playbackModeBtn=$('playbackModeBtn');
