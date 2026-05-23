@@ -116,21 +116,20 @@ body.list-mode .modeIcon i:nth-child(4){display:none}
 @media (max-width:560px){:root{--mobile-cover-size:min(88vw,calc(100vh - 164px),460px);--mobile-cover-size:min(88vw,calc(100dvh - 164px),460px)}.albumCard{padding:68px 0 84px}.albumCard img{border-radius:18px}.viewToggleBtn{width:46px;height:46px}}
 
 body.list-mode #ambientImage{opacity:.08;filter:blur(48px) saturate(100%)}
-body.list-mode #ambientShade{display:none}
-body.list-mode .stage{display:block;overflow:visible;perspective:none;padding:0}
+body.list-mode .stage{display:block;overflow:hidden;perspective:none;padding:86px 0 0}
 body.list-mode .coverflow{display:block;height:100%;overflow-x:hidden;overflow-y:auto;padding:0 10px 30px;transform-style:flat;touch-action:pan-y;scroll-snap-type:none;scrollbar-width:thin;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch}
 body.list-mode .counter,body.list-mode .genreHud{display:none}
-.albumListGrid{width:min(1160px,100%);margin:0 auto;padding:0 0 52px;display:grid;grid-template-columns:repeat(auto-fit,minmax(172px,1fr));gap:30px 20px;align-content:start;align-items:start}
-.albumListCard{min-width:0;border:0;background:transparent;color:#fff;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;display:block}
+.albumListGrid{width:min(1160px,100%);margin:0 auto;padding:0 0 52px;display:grid;grid-template-columns:repeat(auto-fit,minmax(172px,1fr));gap:30px 20px;align-content:start}
+.albumListCard{min-width:0;border:0;background:transparent;color:#fff;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .albumListCover{position:relative;aspect-ratio:1/1;border-radius:6px;overflow:hidden;background:rgba(255,255,255,.10);box-shadow:0 16px 46px rgba(0,0,0,.30),0 0 0 1px rgba(255,255,255,.10);transition:transform .18s ease,box-shadow .18s ease}
 .albumListCover img{width:100%;height:100%;display:block;object-fit:cover}
 .albumListCard:hover .albumListCover{transform:translateY(-2px);box-shadow:0 20px 56px rgba(0,0,0,.38),0 0 0 1px rgba(255,255,255,.18)}
 .albumListCard.active .albumListCover{box-shadow:0 20px 58px rgba(0,0,0,.42),0 0 0 3px rgba(250,45,72,.92)}
-.albumListTitle{height:17px;margin-top:8px;font-size:14px;line-height:17px;font-weight:850;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.albumListTitle{margin-top:8px;font-size:14px;line-height:1.18;font-weight:850;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .albumListArtist{margin-top:4px;color:var(--sub);font-size:13px;line-height:1.18;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .albumListMeta{margin-top:4px;color:var(--muted);font-size:11px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-@media (max-width:900px){body.list-mode .stage{position:absolute;inset:0;height:100vh;height:100dvh;padding:0}.albumListGrid{grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:24px 14px;padding-bottom:42px}.albumListTitle{height:16px;font-size:13px;line-height:16px}.albumListArtist{font-size:12px}.albumListMeta{font-size:10px}}
-@media (max-width:560px){body.list-mode .stage{padding-top:0}.albumListGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 12px;padding-left:10px;padding-right:10px}.albumListCover{border-radius:5px}}
+@media (max-width:900px){body.list-mode .stage{position:absolute;inset:0;height:100vh;height:100dvh;padding:76px 0 0}.albumListGrid{grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:24px 14px;padding-bottom:42px}.albumListTitle{font-size:13px}.albumListArtist{font-size:12px}.albumListMeta{font-size:10px}}
+@media (max-width:560px){body.list-mode .stage{padding-top:68px}.albumListGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 12px;padding-left:10px;padding-right:10px}.albumListCover{border-radius:5px}}
 
 </style>
 </head>
