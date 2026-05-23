@@ -195,7 +195,6 @@ body.list-mode .counter,body.list-mode .genreHud{display:none}
         <button class="mainBtn" onclick="toggleFavoriteCurrent()" id="favoriteBtn">☆ Favorite</button>
         <button class="mainBtn" id="fullscreenBtn" onclick="toggleFullscreen()">전체화면</button>
         <button class="mainBtn" onclick="openAdmin(); closeMenu();">관리자 모드</button>
-        <button class="mainBtn" onclick="reshuffleRandom()">랜덤 다시 섞기</button>
         <button class="mainBtn" onclick="shareCurrentAlbum()">공유/복사</button>
         <button class="mainBtn" id="playbackModeBtn" onclick="togglePlaybackMode()">재생 방식: 직접</button>
       </div>
@@ -235,7 +234,6 @@ const FAVORITE_KEY='APPLE_MUSIC_COVERFLOW_FAVORITES_V1';
 const PLAYBACK_MODE_KEY='APPLE_MUSIC_COVERFLOW_PLAYBACK_MODE_V1';
 const VIEW_MODE_KEY='APPLE_MUSIC_COVERFLOW_VIEW_MODE_V1';
 const RECENT_KEY='APPLE_MUSIC_COVERFLOW_RECENT_V1';
-const RANDOM_SALT_KEY='APPLE_MUSIC_COVERFLOW_RANDOM_SALT_V1';
 const SHORTCUT_NAME='Play Apple Music URL';
 const RECENT_LIMIT=36;
 const NAV_INTERVAL=180;
@@ -256,8 +254,6 @@ let playbackMode=localStorage.getItem(PLAYBACK_MODE_KEY)||'direct';
 let viewMode=localStorage.getItem(VIEW_MODE_KEY)||'coverflow';
 if(!['coverflow','list'].includes(viewMode))viewMode='coverflow';
 let adminKey=localStorage.getItem(ADMIN_KEY_STORAGE)||'';
-let randomSalt=localStorage.getItem(RANDOM_SALT_KEY)||String(Date.now());
-if(!localStorage.getItem(RANDOM_SALT_KEY))localStorage.setItem(RANDOM_SALT_KEY,randomSalt);
 const sampleAlbums=[
 {artist:'Adrianne Lenker',title:'Bright Future',genre:'am6',year:2024,cover:'https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/db/d5/b5/dbd5b594-1e28-23e0-c4b2-26ddbe473dfb/191400064973.png/3000x3000bb.webp',appleMusic:'https://music.apple.com/kr/album/bright-future/1721534468'},
 {artist:'Radiohead',title:'In Rainbows',genre:'pm11',year:2007,cover:'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/51/44/69/514469c8-13e5-0d6e-526f-9c41af788ea7/634904032463.png/3000x3000bb.webp',appleMusic:'https://music.apple.com/kr/album/in-rainbows/1440643153'},
@@ -277,8 +273,6 @@ function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(library));}
 function saveFav(){localStorage.setItem(FAVORITE_KEY,JSON.stringify(favorites));}
 function saveRecent(){localStorage.setItem(RECENT_KEY,JSON.stringify(recentAlbumIds.slice(0,RECENT_LIMIT)));}
 function uid(a){return `${a.artist||''}__${a.title||''}__${a.appleMusic||''}`;}
-function hashString(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
-function stableRandomScore(a){return hashString(`${randomSalt}:${uid(a)}`);}
 function recentRank(a){const i=recentAlbumIds.indexOf(uid(a));return i<0?Number.MAX_SAFE_INTEGER:i;}
 function recordRecentAlbum(a){if(!a)return;const id=uid(a);recentAlbumIds=[id,...recentAlbumIds.filter(v=>v!==id)].slice(0,RECENT_LIMIT);saveRecent();}
 function albumNumberText(i=index,total=filtered.length){if(!total)return'00 / 00';const width=Math.max(2,String(total).length);return`${String(i+1).padStart(width,'0')} / ${String(total).padStart(width,'0')}`;}
@@ -309,7 +303,7 @@ function directPlaybackTargetUrl(url){return appleAppUrl(url,true);}
 function openAppleMusic(url,direct=false){const target=direct?directPlaybackTargetUrl(url):playbackTargetUrl(url);if(!target)return;location.assign(target);}
 function getGenreValues(){return[...new Set(library.map(a=>String(a.genre||'').trim()).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b)));}
 function buildGenres(){const sel=$('genreSelect');const old=sel.value;const genres=getGenreValues();sel.innerHTML='<option value="All">All Genres</option><option value="Favorites">Favorites</option><option value="Recent">최근 열어봄</option>'+genres.map(g=>`<option value="${esc(g)}">${esc(g)}</option>`).join('');sel.value=[...genres,'All','Favorites','Recent'].includes(old)?old:'All';const preset=$('genrePresetSelect');if(preset){const oldPreset=preset.value;preset.innerHTML='<option value="">기존 장르 선택</option>'+genres.map(g=>`<option value="${esc(g)}">${esc(g)}</option>`).join('');preset.value=genres.includes(oldPreset)?oldPreset:'';syncAdminGenrePreset();}}
-function applyFilters(){let list=[...library];if(searchQuery){const q=searchQuery.toLowerCase();list=list.filter(a=>String(a.title).toLowerCase().includes(q)||String(a.artist).toLowerCase().includes(q));}if(genreFilter==='Favorites')list=list.filter(a=>favorites.includes(uid(a)));else if(genreFilter==='Recent')list=list.filter(a=>recentAlbumIds.includes(uid(a)));else if(genreFilter!=='All')list=list.filter(a=>a.genre===genreFilter);if(genreFilter==='Recent')list.sort((a,b)=>recentRank(a)-recentRank(b));else if(sortMode==='artist')list.sort((a,b)=>String(a.artist).localeCompare(String(b.artist))||String(a.title).localeCompare(String(b.title)));else if(sortMode==='title')list.sort((a,b)=>String(a.title).localeCompare(String(b.title)));else if(sortMode==='year')list.sort((a,b)=>(Number(a.year)||0)-(Number(b.year)||0));else if(sortMode==='year-desc')list.sort((a,b)=>(Number(b.year)||0)-(Number(a.year)||0));else if(sortMode==='random')list.sort((a,b)=>stableRandomScore(a)-stableRandomScore(b));filtered=list;index=Math.min(index,Math.max(0,filtered.length-1));render();}
+function applyFilters(){let list=[...library];if(searchQuery){const q=searchQuery.toLowerCase();list=list.filter(a=>String(a.title).toLowerCase().includes(q)||String(a.artist).toLowerCase().includes(q));}if(genreFilter==='Favorites')list=list.filter(a=>favorites.includes(uid(a)));else if(genreFilter==='Recent')list=list.filter(a=>recentAlbumIds.includes(uid(a)));else if(genreFilter!=='All')list=list.filter(a=>a.genre===genreFilter);if(genreFilter==='Recent')list.sort((a,b)=>recentRank(a)-recentRank(b));else if(sortMode==='artist')list.sort((a,b)=>String(a.artist).localeCompare(String(b.artist))||String(a.title).localeCompare(String(b.title)));else if(sortMode==='title')list.sort((a,b)=>String(a.title).localeCompare(String(b.title)));else if(sortMode==='year')list.sort((a,b)=>(Number(a.year)||0)-(Number(b.year)||0));else if(sortMode==='year-desc')list.sort((a,b)=>(Number(b.year)||0)-(Number(a.year)||0));else if(sortMode==='random')list=shuffle(list);filtered=list;index=Math.min(index,Math.max(0,filtered.length-1));render();}
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a;}
 function isMobileView(){return window.innerWidth<900;}
 function isListMode(){return viewMode==='list';}
@@ -366,7 +360,6 @@ function setSearch(v){searchQuery=v;index=0;applyFilters();}function setGenre(v)
 function selectAdminGenre(v){if(!v)return;$('inputGenre').value=v;}
 function syncAdminGenrePreset(){const preset=$('genrePresetSelect');if(!preset)return;const value=$('inputGenre')?.value.trim()||'';const exists=[...preset.options].some(option=>option.value===value);preset.value=exists?value:'';}
 function currentAlbum(){return filtered[index]||null;}
-function reshuffleRandom(){randomSalt=`${Date.now()}_${Math.random().toString(36).slice(2)}`;localStorage.setItem(RANDOM_SALT_KEY,randomSalt);if(sortMode!=='random')setSort('random');else{index=0;applyFilters();}toast('랜덤 순서를 다시 섞었습니다.');}
 function shareTitle(a){return[a?.title,a?.artist].filter(Boolean).join(' - ')||'ColdishWave';}
 function shareUrl(a){return webAppleUrl(a?.appleMusic||playbackUrl(a));}
 function fallbackCopy(text){const ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.left='-999px';ta.style.top='0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy');}catch(e){}ta.remove();return ok;}
