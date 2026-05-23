@@ -1,4 +1,4 @@
-const CACHE_NAME = 'coldishwave-shell-v2';
+const CACHE_NAME = 'coldishwave-shell-v3';
 const SHELL_ASSETS = [
   './',
   './index.html',
