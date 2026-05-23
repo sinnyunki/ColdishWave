@@ -23,7 +23,7 @@
   --flow-ease:cubic-bezier(.19,.78,.22,1);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;min-height:100%;background:#000;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Inter",system-ui,sans-serif;overflow:hidden}
+html,body{width:100%;min-height:100%;background:#000;color:var(--text);font-family:"Noto Sans CJK KR","Noto Sans KR","Source Han Sans KR","본고딕","Apple SD Gothic Neo",sans-serif;overflow:hidden}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 
@@ -101,14 +101,14 @@ body.list-mode .modeIcon i:nth-child(4){display:none}
 .hamburgerBtn:hover{transform:translateY(-2px);background:rgba(255,255,255,.12)}
 .hamburgerBtn span{width:20px;height:2px;border-radius:999px;background:#fff;display:block}
 .menuPanel{position:fixed;inset:0;z-index:90;display:none;pointer-events:none}.menuPanel.show{display:block;pointer-events:auto}.menuDim{position:absolute;inset:0;background:rgba(0,0,0,.40);backdrop-filter:blur(4px)}
-.menuBox{position:absolute;top:14px;right:14px;width:min(430px,calc(100% - 28px));max-height:calc(100vh - 28px);overflow:auto;border:1px solid rgba(255,255,255,.14);border-radius:28px;background:linear-gradient(180deg,rgba(20,20,20,.94),rgba(10,10,10,.92));box-shadow:0 34px 110px rgba(0,0,0,.72);backdrop-filter:blur(24px);padding:20px;animation:menuIn .22s ease both}
+.menuBox{position:absolute;top:14px;right:14px;width:min(430px,calc(100% - 28px));max-height:calc(100vh - 28px);overflow:auto;border:1px solid rgba(255,255,255,.14);border-radius:28px;background:linear-gradient(180deg,rgba(20,20,20,.94),rgba(10,10,10,.92));box-shadow:0 34px 110px rgba(0,0,0,.72);backdrop-filter:blur(24px);padding:16px 20px 20px;animation:menuIn .22s ease both}
 @keyframes menuIn{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
-.menuSearchGroup{margin-bottom:18px}.menuHeader{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:18px}.menuKicker{font-size:11px;color:var(--muted);font-weight:900;letter-spacing:.08em}.menuHeader h2{font-size:30px;letter-spacing:-.06em;line-height:.96}.menuClose{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;font-size:24px;line-height:1}
+.menuSearchGroup{margin-bottom:18px}.menuHeader{display:flex;justify-content:flex-end;align-items:center;margin-bottom:10px}.menuHeader>div{display:none}.menuKicker{font-size:11px;color:var(--muted);font-weight:900;letter-spacing:.08em}.menuHeader h2{font-size:30px;letter-spacing:-.06em;line-height:.96}.menuClose{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;font-size:24px;line-height:1;display:grid;place-items:center;padding:0}
 .menuCurrent{display:grid;grid-template-columns:minmax(92px,auto) 1fr;gap:12px;align-items:start;padding:14px;border:1px solid rgba(255,255,255,.10);border-radius:20px;background:rgba(255,255,255,.055);margin-bottom:14px}.currentIndex{font-size:30px;line-height:1;font-weight:950;letter-spacing:-.04em;color:rgba(255,255,255,.42);white-space:nowrap}
 .menuCurrent .albumTitle{font-size:24px;line-height:1;letter-spacing:-.055em}.menuCurrent .albumArtist{font-size:14px;margin-top:8px}.menuCurrent .albumMeta{font-size:12px;margin-top:8px;min-height:auto}
 .menuActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}.menuActions .mainBtn{width:100%;height:44px;padding:0 12px;font-size:13px}.menuActions .primary{grid-column:1/-1}.menuSectionTitle{font-size:12px;color:var(--muted);font-weight:900;margin:4px 0 8px;letter-spacing:.02em}
-.menuPanel .searchbar{position:static;top:auto;left:auto;transform:none!important;z-index:auto;width:100%;display:grid;grid-template-columns:1fr;gap:8px;opacity:1;pointer-events:auto;margin:0}.menuPanel .searchbar input,.menuPanel .searchbar select{width:100%;height:43px;background:rgba(255,255,255,.075)}
-.menuKicker,.menuCurrent,.menuHint{display:none!important}
+.menuPanel .searchbar{position:static;top:auto;left:auto;transform:none!important;z-index:auto;width:100%;display:grid;grid-template-columns:1fr;gap:8px;opacity:1;pointer-events:auto;margin:0}.menuPanel .searchbar input,.menuPanel .searchbar select{width:100%;height:43px;background:rgba(255,255,255,.075)}.menuPanel .searchbar select{appearance:none;-webkit-appearance:none;padding-right:42px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 6.25 8 9.75l3.5-3.5' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-size:16px 16px}.menuPanel .searchbar select::-ms-expand{display:none}
+.menuHeader>div,.menuCurrent,.menuHint{display:none!important}
 .menuHint{margin-top:14px;color:var(--muted);font-size:12px;line-height:1.55}.infoDock,.navBtn{display:none!important}.stage{padding-top:0}
 @media (max-width:900px){html,body{overflow:hidden}.compactTopbar{position:fixed;padding:14px 14px 0}.viewToggleBtn{left:14px;top:14px}.stage{position:absolute;inset:0;height:100vh;height:100dvh;padding-top:0}}
 @media (max-width:560px){.hamburgerBtn{width:46px;height:46px}.menuBox{top:10px;right:10px;width:calc(100% - 20px);border-radius:22px;padding:16px}.menuActions{grid-template-columns:1fr}.albumCard{border-radius:18px}}
@@ -148,26 +148,26 @@ body.list-mode .counter,body.list-mode .genreHud{display:none}
   </header>
 
   <aside class="menuPanel" id="menuPanel" aria-hidden="true">
-    <div class="menuDim" onclick="closeMenu()"></div>
-    <div class="menuBox">
-      <div class="menuSearchGroup">
-        <div class="menuSectionTitle">검색 / 정렬</div>
-        <div class="searchbar menuSearchbar">
+	    <div class="menuDim" onclick="closeMenu()"></div>
+	    <div class="menuBox">
+	      <div class="menuHeader">
+	        <div>
+	          <div class="menuKicker">LOCAL APPLE MUSIC</div>
+	          <h2>CodishWave</h2>
+	        </div>
+	        <button class="menuClose" onclick="closeMenu()" aria-label="메뉴 닫기">×</button>
+	      </div>
+
+	      <div class="menuSearchGroup">
+	        <div class="menuSectionTitle">검색 / 정렬</div>
+	        <div class="searchbar menuSearchbar">
           <input id="searchInput" type="search" placeholder="앨범 / 아티스트 검색" oninput="setSearch(this.value)">
           <select id="genreSelect" onchange="setGenre(this.value)"><option value="All">All Genres</option><option value="Favorites">Favorites</option></select>
           <select onchange="setSort(this.value)"><option value="custom">등록 순서</option><option value="artist">아티스트 이름순</option><option value="year-desc">최신 연도순</option><option value="year">오래된 연도순</option><option value="title">앨범 제목순</option><option value="random">랜덤</option></select>
-        </div>
-      </div>
+	        </div>
+	      </div>
 
-      <div class="menuHeader">
-        <div>
-          <div class="menuKicker">LOCAL APPLE MUSIC</div>
-          <h2>CodishWave</h2>
-        </div>
-        <button class="menuClose" onclick="closeMenu()" aria-label="메뉴 닫기">×</button>
-      </div>
-
-      <div class="menuCurrent">
+	      <div class="menuCurrent">
         <div class="currentIndex" id="menuCounter">00</div>
         <div>
           <h3 class="albumTitle" id="albumTitle">앨범을 추가하세요</h3>
