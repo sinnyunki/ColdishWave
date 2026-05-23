@@ -366,7 +366,7 @@ function toggleControls(){toggleMenu();}
 
 function toggleMenu(){const p=$('menuPanel');const open=p.classList.toggle('show');p.setAttribute('aria-hidden',open?'false':'true');}
 function closeMenu(){const p=$('menuPanel');if(!p)return;p.classList.remove('show');p.setAttribute('aria-hidden','true');}
-function toggleViewMode(){viewMode=isListMode()?'coverflow':'list';localStorage.setItem(VIEW_MODE_KEY,viewMode);render();toast(isListMode()?'리스트 모드로 전환했습니다.':'커버플로우 모드로 전환했습니다.');}
+function toggleViewMode(){viewMode=isListMode()?'coverflow':'list';localStorage.setItem(VIEW_MODE_KEY,viewMode);render();toast(isListMode()?'리스트 모드':'커버플로우 모드');}
 function togglePlaybackMode(){playbackMode=playbackMode==='shortcut'?'direct':'shortcut';localStorage.setItem(PLAYBACK_MODE_KEY,playbackMode);setInfo(filtered[index]);toast(playbackMode==='shortcut'?'단축어 재생 모드입니다.':'직접 열기 모드입니다.');}
 function toast(msg){const el=$('toast');el.textContent=msg;el.classList.add('show');clearTimeout(window.__toast);window.__toast=setTimeout(()=>el.classList.remove('show'),1800);}
 function isTypingTarget(el){return !!el&&['INPUT','TEXTAREA','SELECT'].includes(el.tagName);}
